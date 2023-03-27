@@ -1,0 +1,8 @@
+fire==0.5.0
+pydantic==1.10.6
+torch==2.0.0
+tqdm==4.65.0
+transformers==4.27.1
+sentencepiece==0.1.97
+# git+https://github.com/huggingface/transformers.git@057e1d74733f52817dc05b673a340b4e3ebea08c
+# git+https://github.com/huggingface/peft.git@d8c3b6bca49e4aa6e0498b416ed9adc50cc1a5fd
