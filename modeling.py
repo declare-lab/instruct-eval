@@ -72,9 +72,11 @@ class CausalModel(SeqToSeqModel):
 
 
 class LlamaModel(SeqToSeqModel):
+    use_template: bool = False
     """
     Not officially supported by AutoModelForCausalLM, so we need the specific class
-    Also includes the prompt template from: https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py
+    Optionally, we can use the prompt template from: https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py
+    However, initial MMLU experiments indicate that the template is not useful for few-shot settings
     """
 
     def load(self):
@@ -86,14 +88,17 @@ class LlamaModel(SeqToSeqModel):
             self.model.to(self.device)
 
     def run(self, prompt: str) -> str:
-        self.load()
-        template = (
-            "Below is an instruction that describes a task. "
-            "Write a response that appropriately completes the request.\n\n"
-            "### Instruction:\n{instruction}\n\n### Response:"
-        )
+        if self.use_template:
+            template = (
+                "Below is an instruction that describes a task. "
+                "Write a response that appropriately completes the request.\n\n"
+                "### Instruction:\n{instruction}\n\n### Response:"
+            )
+            text = template.format_map(dict(instruction=prompt))
+        else:
+            text = prompt
 
-        text = template.format_map(dict(instruction=prompt))
+        self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         outputs = self.model.generate(
             **inputs,

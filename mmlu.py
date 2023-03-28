@@ -229,6 +229,12 @@ p mmlu.py main data/mmlu --model_name causal --model_path facebook/opt-iml-max-1
 p mmlu.py main data/mmlu --model_name causal --model_path EleutherAI/gpt-j-6B
 0.2714713003845606
 
+p mmlu.py main data/mmlu --model_name llama --model_path decapoda-research/llama-7b-hf
+0.35215781227745335
+
+p mmlu.py main data/mmlu --model_name llama --model_path chavinlo/alpaca-native
+0.4163936761145136
+
 """
 
 
