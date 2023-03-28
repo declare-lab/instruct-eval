@@ -143,43 +143,19 @@ def evaluate(args, subject, model, tokenizer, dev_df, test_df):
         prompt_end = format_example(test_df, i, include_answer=False)
         train_prompt = gen_prompt(dev_df, subject, k)
         prompt = train_prompt + prompt_end
-
-        input_ids = tokenizer(prompt, return_tensors="pt").input_ids.cuda()
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
         while input_ids.shape[-1] > 2048:
             k -= 1
             train_prompt = gen_prompt(dev_df, subject, k)
             prompt = train_prompt + prompt_end
-            input_ids = tokenizer(prompt, return_tensors="pt").input_ids.cuda()
+            input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
         label = test_df.iloc[i, test_df.shape[1] - 1]
-
-        decoder_input_ids = tokenizer("", return_tensors="pt").input_ids.cuda()
-        # noinspection PyProtectedMember
-        decoder_input_ids = model._shift_right(decoder_input_ids)
-        logits = model(
-            input_ids=input_ids, decoder_input_ids=decoder_input_ids
-        ).logits.flatten()
-
-        probs = (
-            torch.nn.functional.softmax(
-                torch.tensor(
-                    [
-                        logits[tokenizer("A").input_ids[0]],
-                        logits[tokenizer("B").input_ids[0]],
-                        logits[tokenizer("C").input_ids[0]],
-                        logits[tokenizer("D").input_ids[0]],
-                    ]
-                ),
-                dim=0,
-            )
-            .detach()
-            .cpu()
-            .numpy()
-        )
-        pred = {0: "A", 1: "B", 2: "C", 3: "D"}[int(np.argmax(probs))]
-
-        cor = pred == label
+        outputs = model.generate(input_ids.to(model.device), max_length=2)
+        pred = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        probs = [0 for _ in range(4)]
+        cor = pred.strip().startswith(label)
         cors.append(cor)
         all_probs.append(probs)
 
@@ -256,7 +232,9 @@ def main(model: str, data_dir: str, ntrain: int = 5):
 
 """
 p mmlu.py main google/flan-t5-base data/mmlu
-0.342330152399943
+0.342330152399943 (with logits)
+0.3404785643070788 (raw generated text)
+
 """
 
 
