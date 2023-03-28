@@ -7,10 +7,10 @@ from argparse import Namespace
 
 import numpy as np
 import pandas as pd
-import torch
 from fire import Fire
 from tqdm import tqdm
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
+from modeling import select_model, EvalModel
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -133,7 +133,7 @@ def gen_prompt(train_df, subject, k=-1):
     return prompt
 
 
-def evaluate(args, subject, model, tokenizer, dev_df, test_df):
+def evaluate(args, subject, model: EvalModel, dev_df, test_df):
     cors = []
     all_probs = []
 
@@ -143,18 +143,15 @@ def evaluate(args, subject, model, tokenizer, dev_df, test_df):
         prompt_end = format_example(test_df, i, include_answer=False)
         train_prompt = gen_prompt(dev_df, subject, k)
         prompt = train_prompt + prompt_end
-        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
-        while input_ids.shape[-1] > 2048:
+        while not model.check_valid_length(prompt):
             k -= 1
             train_prompt = gen_prompt(dev_df, subject, k)
             prompt = train_prompt + prompt_end
-            input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
         label = test_df.iloc[i, test_df.shape[1] - 1]
-        outputs = model.generate(input_ids.to(model.device), max_length=2)
-        pred = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        probs = [0 for _ in range(4)]
+        pred = model.run(prompt)
+        probs = [0 for _ in get_choices()]
         cor = pred.strip().startswith(label)
         cors.append(cor)
         all_probs.append(probs)
@@ -168,13 +165,11 @@ def evaluate(args, subject, model, tokenizer, dev_df, test_df):
     return cors, acc, all_probs
 
 
-def main(model: str, data_dir: str, ntrain: int = 5):
+def main(data_dir: str, ntrain: int = 5, **kwargs):
     args = Namespace(**locals())
     print(args)
-    model = AutoModelForSeq2SeqLM.from_pretrained(args.model)
-    tokenizer = AutoTokenizer.from_pretrained(args.model)
-    model.cuda()
-    model.eval()
+    model = select_model(max_input_length=2048, max_output_length=2, **kwargs)
+    print(model)
 
     subjects = sorted(
         [
@@ -200,10 +195,7 @@ def main(model: str, data_dir: str, ntrain: int = 5):
             os.path.join(args.data_dir, "test", subject + "_test.csv"), header=None
         )
 
-        with torch.inference_mode():
-            cors, acc, probs = evaluate(
-                args, subject, model, tokenizer, dev_df, test_df
-            )
+        cors, acc, probs = evaluate(args, subject, model, dev_df, test_df)
         subcats = get_subcategories()[subject]
         for subcat in subcats:
             subcat_cors[subcat].append(cors)
@@ -211,11 +203,6 @@ def main(model: str, data_dir: str, ntrain: int = 5):
                 if subcat in get_categories()[key]:
                     cat_cors[key].append(cors)
         all_cors.append(cors)
-
-        test_df["{}_correct".format(args.model)] = cors
-        for j in range(probs.shape[1]):
-            choice = get_choices()[j]
-            test_df["{}_choice{}_probs".format(args.model, choice)] = probs[:, j]
 
     for subcat in subcat_cors:
         subcat_acc = np.mean(np.concatenate(subcat_cors[subcat]))
@@ -231,9 +218,11 @@ def main(model: str, data_dir: str, ntrain: int = 5):
 
 
 """
-p mmlu.py main google/flan-t5-base data/mmlu
-0.342330152399943 (with logits)
-0.3404785643070788 (raw generated text)
+p mmlu.py main data/mmlu --model_name seq_to_seq --model_path google/flan-t5-base 
+0.3404785643070788
+
+p mmlu.py main data/mmlu --model_name seq_to_seq --model_path google/flan-t5-xl 
+0.49252243270189433
 
 """
 
