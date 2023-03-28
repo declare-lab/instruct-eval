@@ -144,7 +144,7 @@ def evaluate(args, subject, model: EvalModel, dev_df, test_df):
         train_prompt = gen_prompt(dev_df, subject, k)
         prompt = train_prompt + prompt_end
 
-        while not model.check_valid_length(prompt):
+        while not model.check_valid_length(prompt) and k > 0:
             k -= 1
             train_prompt = gen_prompt(dev_df, subject, k)
             prompt = train_prompt + prompt_end
@@ -167,9 +167,8 @@ def evaluate(args, subject, model: EvalModel, dev_df, test_df):
 
 def main(data_dir: str, ntrain: int = 5, **kwargs):
     args = Namespace(**locals())
-    print(args)
     model = select_model(max_input_length=2048, max_output_length=2, **kwargs)
-    print(model)
+    print(locals())
 
     subjects = sorted(
         [
@@ -223,6 +222,12 @@ p mmlu.py main data/mmlu --model_name seq_to_seq --model_path google/flan-t5-bas
 
 p mmlu.py main data/mmlu --model_name seq_to_seq --model_path google/flan-t5-xl 
 0.49252243270189433
+
+p mmlu.py main data/mmlu --model_name causal --model_path facebook/opt-iml-max-1.3b
+0.2756017661301809
+
+p mmlu.py main data/mmlu --model_name causal --model_path EleutherAI/gpt-j-6B
+0.2714713003845606
 
 """
 
