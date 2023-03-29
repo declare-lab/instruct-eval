@@ -217,6 +217,12 @@ def main(data_dir: str, ntrain: int = 5, **kwargs):
 
 
 """
+p mmlu.py main data/mmlu --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xl
+0.46560319042871384
+
+p mmlu.py main data/mmlu --model_name seq_to_seq --model_path ../FlanPaca/flan-alpaca-xl-epoch-1
+0.45292693348525853
+
 p mmlu.py main data/mmlu --model_name seq_to_seq --model_path google/flan-t5-base 
 0.3404785643070788
 
