@@ -10,6 +10,7 @@ from transformers import (
     AutoModelForCausalLM,
     LlamaForCausalLM,
     LlamaTokenizer,
+    AutoModel,
 )
 
 
@@ -108,6 +109,25 @@ class LlamaModel(SeqToSeqModel):
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
 
 
+class ChatGLMModel(SeqToSeqModel):
+    def load(self):
+        if self.tokenizer is None:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_path, trust_remote_code=True
+            )
+        if self.model is None:
+            self.model = AutoModel.from_pretrained(
+                self.model_path, trust_remote_code=True
+            ).half()  # FP16 is required for ChatGLM
+            self.model.eval()
+            self.model.to(self.device)
+
+    def run(self, prompt: str) -> str:
+        self.load()
+        response, history = self.model.chat(self.tokenizer, prompt, history=[])
+        return response
+
+
 def select_model(model_name: str, **kwargs) -> EvalModel:
     if model_name == "seq_to_seq":
         return SeqToSeqModel(**kwargs)
@@ -115,6 +135,8 @@ def select_model(model_name: str, **kwargs) -> EvalModel:
         return CausalModel(**kwargs)
     if model_name == "llama":
         return LlamaModel(**kwargs)
+    if model_name == "chatglm":
+        return ChatGLMModel(**kwargs)
     raise ValueError(f"Invalid name: {model_name}")
 
 
@@ -132,6 +154,7 @@ def test_model(
 p modeling.py test_model --model_name causal --model_path gpt2
 p modeling.py test_model --model_name llama --model_path decapoda-research/llama-7b-hf
 p modeling.py test_model --model_name llama --model_path chavinlo/alpaca-native
+p modeling.py test_model --model_name chatglm --model_path THUDM/chatglm-6b
 """
 
 

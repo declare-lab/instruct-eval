@@ -241,6 +241,9 @@ p mmlu.py main data/mmlu --model_name llama --model_path decapoda-research/llama
 p mmlu.py main data/mmlu --model_name llama --model_path chavinlo/alpaca-native
 0.4163936761145136
 
+p mmlu.py main data/mmlu --model_name chatglm --model_path THUDM/chatglm-6b
+0.36155818259507194
+
 """
 
 
