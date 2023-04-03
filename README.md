@@ -1,32 +1,57 @@
 ## 🍮 📚 Flan-Eval: Reproducible Held-Out Evaluation for Instruction Tuning
 
-This repository contains code to quantitatively evaluate instruction-tuned models such as Alpaca and Flan-T5 on held-out
+This repository contains code to evaluate instruction-tuned models such as Alpaca and Flan-T5 on held-out
 tasks.
-We aim to include a suite of academic benchmarks, including MMLU, BBH and HumanEval.
+We aim to facilitate simple and convenient benchmarking across multiple tasks and models.
 
 ### Why?
 
 Instruction-tuned models such as [Flan-T5](https://arxiv.org/abs/2210.11416)
-and [Alpaca](https://crfm.stanford.edu/2023/03/13/alpaca.html) represent an exciting new direction to approximate the
+and [Alpaca](https://crfm.stanford.edu/2023/03/13/alpaca.html) represent an exciting direction to approximate the
 performance of large language models (LLMs) like ChatGPT at lower cost.
 However, it is challenging to compare the performance of different models qualitatively.
-To evaluate the instruction-tuned models on a wide range of unseen and challenging tasks, we can look to academic
-benchmarks such as [MMLU](https://arxiv.org/abs/2009.03300) and [BBH](https://arxiv.org/abs/2210.09261) which are often
-used in literature.
-However, the [published models](https://github.com/google-research/FLAN) do not open-source their evaluation suites,
-while existing suites such as [evalation-harness](https://github.com/EleutherAI/lm-evaluation-harness) do not focus on
-instruction-tuned models.
-Hence, we aim to provide a simple evaluation suite that covers both decoder and encoder-decoder
+To evaluate how well the models generalize across a wide range of unseen and challenging tasks, we can use academic
+benchmarks such as [MMLU](https://arxiv.org/abs/2009.03300) and [BBH](https://arxiv.org/abs/2210.09261).
+Compared to existing libraries such as [evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
+and [HELM](https://github.com/stanford-crfm/helm), this repo enables simple and convenient evaluation for multiple
 models.
+Notably, we support most models from HuggingFace Transformers 🤗 :
 
-### Usage
+- [AutoModelForCausalLM](https://huggingface.co/docs/transformers/model_doc/auto#transformers.AutoModelForCausalLM) (
+  eg [GPT-2](https://huggingface.co/gpt2-xl), [GPT-J](https://huggingface.co/EleutherAI/gpt-j-6b)
+  , [OPT-IML](https://huggingface.co/facebook/opt-iml-max-1.3b), [BLOOMZ](https://huggingface.co/bigscience/bloomz-7b1))
+- [AutoModelForSeq2SeqLM](https://huggingface.co/docs/transformers/model_doc/auto#transformers.AutoModelForSeq2SeqLM) (
+  eg [Flan-T5](https://huggingface.co/google/flan-t5-xl), [Flan-UL2](https://huggingface.co/google/flan-ul2)
+  , [TK-Instruct](https://huggingface.co/allenai/tk-instruct-3b-def))
+- [LlamaForCausalLM](https://huggingface.co/docs/transformers/main/model_doc/llama#transformers.LlamaForCausalLM) (
+  eg [LLaMA](https://huggingface.co/decapoda-research/llama-7b-hf)
+  , [Alpaca](https://huggingface.co/chavinlo/alpaca-native), [Vicuna](https://huggingface.co/chavinlo/vicuna))
+- [ChatGLM](https://huggingface.co/THUDM/chatglm-6b)
+
+### Example Usage
+
+Evaluate on [Massive Multitask Language Understanding](https://huggingface.co/datasets/lukaemon/mmlu) (MMLU) which
+includes exam questions from 57 tasks such as
+mathematics, history, law, and medicine.
 
 ```
-python mmlu.py main data/mmlu --model_name llama --model_path decapoda-research/llama-7b-hf
-# 0.35215781227745335
+python main.py mmlu --model_name llama --model_path chavinlo/alpaca-native
+# 0.4163936761145136
 
-python mmlu.py main data/mmlu --model_name seq_to_seq --model_path google/flan-t5-xl 
+python main.py mmlu --model_name seq_to_seq --model_path google/flan-t5-xl 
 # 0.49252243270189433
+```
+
+Evaluate on [Big Bench Hard](https://huggingface.co/datasets/lukaemon/bbh) (BBH) which includes 23 challenging tasks for
+which PaLM (540B) performs below an average human
+rater.
+
+```
+python main.py bbh --model_name chatglm --model_path THUDM/chatglm-6b
+# 0.31384628677534854
+
+python main.py bbh --model_name causal --model_path facebook/opt-iml-max-1.3b
+# 0.2929141072504916
 ```
 
 ### Setup
