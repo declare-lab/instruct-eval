@@ -129,15 +129,16 @@ class ChatGLMModel(SeqToSeqModel):
 
 
 def select_model(model_name: str, **kwargs) -> EvalModel:
-    if model_name == "seq_to_seq":
-        return SeqToSeqModel(**kwargs)
-    if model_name == "causal":
-        return CausalModel(**kwargs)
-    if model_name == "llama":
-        return LlamaModel(**kwargs)
-    if model_name == "chatglm":
-        return ChatGLMModel(**kwargs)
-    raise ValueError(f"Invalid name: {model_name}")
+    model_map = dict(
+        seq_to_seq=SeqToSeqModel,
+        causal=CausalModel,
+        llama=LlamaModel,
+        chatglm=ChatGLMModel,
+    )
+    model_class = model_map.get(model_name)
+    if model_class is None:
+        raise ValueError(f"{model_name}. Choose from {list(model_map.keys())}")
+    return model_class(**kwargs)
 
 
 def test_model(
