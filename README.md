@@ -28,6 +28,15 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
   , [Alpaca](https://huggingface.co/chavinlo/alpaca-native), [Vicuna](https://huggingface.co/chavinlo/vicuna))
 - [ChatGLM](https://huggingface.co/THUDM/chatglm-6b)
 
+### Results
+
+| Model Name | Model Path                    | Parameters | MMLU Score | BBH Score |
+|------------|-------------------------------|------------|------------|-----------|
+| seq_to_seq | google/flan-t5-xl             | 3B         | 49.25      | 40.26     |
+| llama      | chavinlo/alpaca-native        | 7B         | 41.64      | 33.36     |
+| llama      | decapoda-research/llama-7b-hf | 7B         | 35.22      | 30.96     |
+| chatglm    | THUDM/chatglm-6b              | 6B         | 36.16      | 31.38     |
+
 ### Example Usage
 
 Evaluate on [Massive Multitask Language Understanding](https://huggingface.co/datasets/lukaemon/mmlu) (MMLU) which
