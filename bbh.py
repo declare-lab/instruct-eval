@@ -76,6 +76,9 @@ p bbh.py main "lukaemon/bbh" --model_name llama --model_path decapoda-research/l
 p bbh.py main "lukaemon/bbh" --model_name llama --model_path chavinlo/alpaca-native
 {'average': 0.3335667396422546}
 
+p bbh.py main "lukaemon/bbh" --model_name chatglm --model_path THUDM/chatglm-6b
+{'average': 0.31384628677534854}
+
 """
 
 
