@@ -165,7 +165,7 @@ def evaluate(args, subject, model: EvalModel, dev_df, test_df):
     return cors, acc, all_probs
 
 
-def main(data_dir: str, ntrain: int = 5, **kwargs):
+def main(data_dir: str = "data/mmlu", ntrain: int = 5, **kwargs):
     args = Namespace(**locals())
     model = select_model(max_input_length=2048, max_output_length=2, **kwargs)
     print(locals())

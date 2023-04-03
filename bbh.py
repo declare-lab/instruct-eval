@@ -51,7 +51,7 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
     return dict(score=sum(is_correct) / len(is_correct))
 
 
-def main(data_dir: str, ntrain: int = 3, **kwargs):
+def main(data_dir: str = "lukaemon/bbh", ntrain: int = 3, **kwargs):
     args = Namespace(**locals())
     model = select_model(max_input_length=2048, max_output_length=32, **kwargs)
     print(locals())
