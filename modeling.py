@@ -30,12 +30,17 @@ class SeqToSeqModel(EvalModel):
     model: Optional[PreTrainedModel]
     tokenizer: Optional[PreTrainedTokenizer]
     device: str = "cuda"
+    load_8bit: bool = False
 
     def load(self):
         if self.model is None:
-            self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_path)
+            args = {}
+            if self.load_8bit:
+                args.update(device_map="auto", load_in_8bit=True)
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_path, **args)
             self.model.eval()
-            self.model.to(self.device)
+            if not self.load_8bit:
+                self.model.to(self.device)
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
 
@@ -84,9 +89,13 @@ class LlamaModel(SeqToSeqModel):
         if self.tokenizer is None:
             self.tokenizer = LlamaTokenizer.from_pretrained(self.model_path)
         if self.model is None:
-            self.model = LlamaForCausalLM.from_pretrained(self.model_path)
+            args = {}
+            if self.load_8bit:
+                args.update(device_map="auto", load_in_8bit=True)
+            self.model = LlamaForCausalLM.from_pretrained(self.model_path, **args)
             self.model.eval()
-            self.model.to(self.device)
+            if not self.load_8bit:
+                self.model.to(self.device)
 
     def run(self, prompt: str) -> str:
         if self.use_template:

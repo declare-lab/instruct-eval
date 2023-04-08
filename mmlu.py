@@ -244,6 +244,18 @@ p mmlu.py main data/mmlu --model_name llama --model_path chavinlo/alpaca-native
 p mmlu.py main data/mmlu --model_name chatglm --model_path THUDM/chatglm-6b
 0.36155818259507194
 
+python main.py mmlu --model_name llama --model_path chavinlo/alpaca-13b --load_8bit
+Average accuracy: 0.425
+
+python main.py mmlu --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit
+Average accuracy: 0.545
+
+python main.py mmlu --model_name causal --model_path togethercomputer/Pythia-Chat-Base-7B
+Average accuracy: 0.268
+
+python main.py mmlu --model_name llama --model_path decapoda-research/llama-13b-hf --load_8bit
+Average accuracy: 0.462
+
 """
 
 

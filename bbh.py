@@ -79,6 +79,15 @@ p bbh.py main "lukaemon/bbh" --model_name llama --model_path chavinlo/alpaca-nat
 p bbh.py main "lukaemon/bbh" --model_name chatglm --model_path THUDM/chatglm-6b
 {'average': 0.31384628677534854}
 
+python main.py bbh --model_name llama --model_path chavinlo/alpaca-13b --load_8bit
+{'average': 0.33351335206026284}
+
+python main.py bbh --model_name causal --model_path togethercomputer/Pythia-Chat-Base-7B
+{'average': 0.29975163365323554}
+
+python main.py bbh --model_name llama --model_path decapoda-research/llama-13b-hf --load_8bit
+{'average': 0.3719930899679183}
+
 """
 
 
