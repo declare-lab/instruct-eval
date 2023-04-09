@@ -59,9 +59,13 @@ class SeqToSeqModel(EvalModel):
 class CausalModel(SeqToSeqModel):
     def load(self):
         if self.model is None:
-            self.model = AutoModelForCausalLM.from_pretrained(self.model_path)
+            args = {}
+            if self.load_8bit:
+                args.update(device_map="auto", load_in_8bit=True)
+            self.model = AutoModelForCausalLM.from_pretrained(self.model_path, **args)
             self.model.eval()
-            self.model.to(self.device)
+            if not self.load_8bit:
+                self.model.to(self.device)
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
 
@@ -154,8 +158,9 @@ def test_model(
     prompt: str = "Write an email about an alpaca that likes flan.",
     model_name: str = "seq_to_seq",
     model_path: str = "google/flan-t5-base",
+    **kwargs,
 ):
-    model = select_model(model_name, model_path=model_path)
+    model = select_model(model_name, model_path=model_path, **kwargs)
     print(locals())
     print(model.run(prompt))
 
@@ -166,7 +171,8 @@ p modeling.py test_model --model_name llama --model_path decapoda-research/llama
 p modeling.py test_model --model_name llama --model_path chavinlo/alpaca-native
 p modeling.py test_model --model_name chatglm --model_path THUDM/chatglm-6b
 p modeling.py test_model --model_name llama --model_path TheBloke/koala-7B-HF
-p modeling.py test_model --model_name llama --model_path eachadea/vicuna-13b
+p modeling.py test_model --model_name llama --model_path eachadea/vicuna-13b --load_8bit
+p modeling.py test_model --model_name causal --model_path togethercomputer/GPT-NeoXT-Chat-Base-20B --load_8bit
 """
 
 

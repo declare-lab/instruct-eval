@@ -94,6 +94,12 @@ python main.py bbh --model_name llama --model_path TheBloke/koala-7B-HF --load_8
 python main.py bbh --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit
 {'average': 0.3468942926723247}
 
+python main.py bbh --model_name llama --model_path eachadea/vicuna-13b --load_8bit
+{'average': 0.3717117791946168}
+
+python main.py bbh --model_name causal --model_path togethercomputer/GPT-NeoXT-Chat-Base-20B --load_8bit
+{'average': 0.30625775783670517}
+
 """
 
 
