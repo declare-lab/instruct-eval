@@ -88,6 +88,12 @@ python main.py bbh --model_name causal --model_path togethercomputer/Pythia-Chat
 python main.py bbh --model_name llama --model_path decapoda-research/llama-13b-hf --load_8bit
 {'average': 0.3719930899679183}
 
+python main.py bbh --model_name llama --model_path TheBloke/koala-7B-HF --load_8bit
+{'average': 0.3118093830908477}
+
+python main.py bbh --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit
+{'average': 0.3468942926723247}
+
 """
 
 

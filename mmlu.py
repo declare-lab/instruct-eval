@@ -256,6 +256,12 @@ Average accuracy: 0.268
 python main.py mmlu --model_name llama --model_path decapoda-research/llama-13b-hf --load_8bit
 Average accuracy: 0.462
 
+python main.py mmlu --model_name llama --model_path TheBloke/koala-7B-HF --load_8bit
+Average accuracy: 0.250
+
+python main.py mmlu --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit
+Average accuracy: 0.446
+
 """
 
 

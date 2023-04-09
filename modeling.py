@@ -165,6 +165,8 @@ p modeling.py test_model --model_name causal --model_path gpt2
 p modeling.py test_model --model_name llama --model_path decapoda-research/llama-7b-hf
 p modeling.py test_model --model_name llama --model_path chavinlo/alpaca-native
 p modeling.py test_model --model_name chatglm --model_path THUDM/chatglm-6b
+p modeling.py test_model --model_name llama --model_path TheBloke/koala-7B-HF
+p modeling.py test_model --model_name llama --model_path eachadea/vicuna-13b
 """
 
 
