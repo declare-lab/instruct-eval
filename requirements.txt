@@ -8,3 +8,4 @@ cpm_kernels==1.0.11  # ChatGLM
 git+https://github.com/huggingface/transformers.git@057e1d74733f52817dc05b673a340b4e3ebea08c  # Llama
 datasets==2.10.1
 # git+https://github.com/huggingface/peft.git@d8c3b6bca49e4aa6e0498b416ed9adc50cc1a5fd
+-e human-eval # human-eval

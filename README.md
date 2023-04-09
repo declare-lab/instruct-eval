@@ -63,6 +63,15 @@ python main.py bbh --model_name causal --model_path facebook/opt-iml-max-1.3b
 # 0.2929141072504916
 ```
 
+Evaluate on [Human Eval](https://github.com/openai/human-eval/tree/master/data) which includes 164 coding questions
+```
+python humaneval.py main --model_name seq_to_seq --model_path google/flan-t5-xl
+
+python humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf
+
+python humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native
+
+```
 ### Setup
 
 Install dependencies and download data.
