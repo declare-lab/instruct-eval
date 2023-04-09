@@ -16,8 +16,8 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
     # best_temperature = {1:0.0, 10:0.6, 100:0.8}
     best_temperature = {1:0.2, 10:0.8, 100:1.0}
     samples = []
-    print("Generating answers...")
-    for task_id in tqdm(dataset):
+    progress_bar = tqdm(total=len(dataset) * num_samples_per_task, desc="Generating samples")
+    for task_id in dataset:
         for _ in range(num_samples_per_task):
             prompt = dataset[task_id]["prompt"]
             temperature = best_temperature[num_samples_per_task]
@@ -26,6 +26,8 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
             else:
                 completion = model.run(prompt)
             samples.append(dict(task_id=task_id, completion=completion))
+            progress_bar.update(1)
+    progress_bar.close()
 
     pred_filename = "humaneval_predictions.jsonl"
     write_jsonl(pred_filename, samples)
