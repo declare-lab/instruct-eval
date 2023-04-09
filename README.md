@@ -33,6 +33,8 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 | Model Name | Model Path                                                                            | Parameters | MMLU Score | BBH Score |
 |------------|---------------------------------------------------------------------------------------|------------|------------|-----------|
 | seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | 3B         | 49.25      | 40.26     |
+| llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | 13B        | 49.70      | 37.17     |
+| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | 13B        | 44.60      | 34.68     |
 | llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | 7B         | 41.64      | 33.36     |
 | llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | 7B         | 35.22      | 30.96     |
 | chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | 6B         | 36.16      | 31.38     |
@@ -56,11 +58,11 @@ which PaLM (540B) performs below an average human
 rater.
 
 ```
-python main.py bbh --model_name chatglm --model_path THUDM/chatglm-6b
-# 0.31384628677534854
+python main.py bbh --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit
+# 0.3468942926723247
 
-python main.py bbh --model_name causal --model_path facebook/opt-iml-max-1.3b
-# 0.2929141072504916
+python main.py bbh --model_name llama --model_path eachadea/vicuna-13b --load_8bit
+# 0.3717117791946168
 ```
 
 ### Setup
