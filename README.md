@@ -30,14 +30,14 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 
 ### Results
 
-| Model Name | Model Path                                                                            | Parameters | MMLU Score | BBH Score |
-|------------|---------------------------------------------------------------------------------------|------------|------------|-----------|
-| seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | 3B         | 49.25      | 40.26     |
-| llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | 13B        | 49.70      | 37.17     |
-| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | 13B        | 44.60      | 34.68     |
-| llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | 7B         | 41.64      | 33.36     |
-| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | 7B         | 35.22      | 30.96     |
-| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | 6B         | 36.16      | 31.38     |
+| Model Name | Model Path                                                                            | Paper                                                    | Parameters | MMLU Score | BBH Score |
+|------------|---------------------------------------------------------------------------------------|----------------------------------------------------------|------------|------------|-----------|
+| seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | [Link](https://arxiv.org/abs/2210.11416)                 | 3B         | 49.25      | 40.26     |
+| llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | [Link](https://vicuna.lmsys.org/)                        | 13B        | 49.70      | 37.17     |
+| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/) | 13B        | 44.60      | 34.68     |
+| llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | [Link](https://crfm.stanford.edu/2023/03/13/alpaca.html) | 7B         | 41.64      | 33.36     |
+| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | [Link](https://arxiv.org/abs/2302.13971)                 | 7B         | 35.22      | 30.96     |
+| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | [Link](https://arxiv.org/abs/2210.02414)                 | 6B         | 36.16      | 31.38     |
 
 ### Example Usage
 
