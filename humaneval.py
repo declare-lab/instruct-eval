@@ -12,9 +12,9 @@ from human_eval.evaluate_functional_correctness import entry_point
 
 def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
 
-    num_samples_per_task = 1
-    # best_temperature = {1:0.0, 10:0.6, 100:0.8}
-    best_temperature = {1:0.2, 10:0.8, 100:1.0}
+    num_samples_per_task = 100
+    best_temperature = {1:0.0, 10:0.6, 100:0.8}
+    # best_temperature = {1:0.2, 10:0.8, 100:1.0}
     samples = []
     progress_bar = tqdm(total=len(dataset) * num_samples_per_task, desc="Generating samples")
     for task_id in dataset:
