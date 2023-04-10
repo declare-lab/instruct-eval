@@ -29,6 +29,8 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int, **kwargs) -> dict:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
             else:
                 completion = model.run(prompt)
+            ## The program tends to overwrite, we only take the first function
+            completion = completion.split('\n\n')[0]
             samples.append(dict(task_id=task_id, completion=completion))
             progress_bar.update(1)
     progress_bar.close()
@@ -45,7 +47,7 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int, **kwargs) -> dict:
 def main(data_dir: str = "", ntrain: int = 3, **kwargs):
     args = Namespace(**locals())
     # model = select_model(max_input_length=1360, max_output_length=1024, **kwargs)
-    model = select_model(max_input_length=1360, max_output_length=512, **kwargs)
+    model = select_model(max_input_length=1024, max_output_length=256, **kwargs)
     print(locals())
 
     dataset = read_problems()
@@ -55,11 +57,11 @@ def main(data_dir: str = "", ntrain: int = 3, **kwargs):
 
 
 """
-p humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 1
+p humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 100
 
-p humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native --n_sample 1
+p humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native --n_sample 100
 
-p humaneval.py main  --model_name llama --model_path eachadea/vicuna-13b --n_sample 1
+p humaneval.py main  --model_name llama --model_path eachadea/vicuna-13b --n_sample 100
 
 """
 
