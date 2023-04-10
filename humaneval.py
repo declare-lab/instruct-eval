@@ -56,10 +56,11 @@ def main(data_dir: str = "", ntrain: int = 3, **kwargs):
 
 """
 p humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 1
-{'pass@1': 0.0}
 
 p humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native --n_sample 1
-{'pass@1': 0.0061}
+
+p humaneval.py main  --model_name llama --model_path eachadea/vicuna-13b --n_sample 1
+
 """
 
 
