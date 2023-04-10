@@ -10,22 +10,21 @@ from modeling import select_model, EvalModel
 from human_eval.data import write_jsonl, read_problems, HUMAN_EVAL
 from human_eval.evaluate_functional_correctness import entry_point
 
-def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
+def evaluate(model: EvalModel, dataset: Dataset, ntrain: int, **kwargs) -> dict:
     """
     This will generate two files:
     f"humaneval_{model_name}_predictions.jsonl": output from model
     f"humaneval_{model_name}_predictions.jsonl_result.jsonl": evaluation result using f"humaneval_{model_name}_predictions.jsonl"
     """
 
-    num_samples_per_task = 100
-    best_temperature = {1:0.0, 10:0.6, 100:0.8}
-    # best_temperature = {1:0.2, 10:0.8, 100:1.0}
+    n_sample = kwargs['n_sample']
+    best_temperature = {1:0.1, 10:0.6, 100:0.8}
     samples = []
-    progress_bar = tqdm(total=len(dataset) * num_samples_per_task, desc="Generating samples")
+    progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
     for task_id in dataset:
-        for _ in range(num_samples_per_task):
+        for _ in range(n_sample):
             prompt = dataset[task_id]["prompt"]
-            temperature = best_temperature[num_samples_per_task]
+            temperature = best_temperature[n_sample]
             if temperature > 0:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
             else:
@@ -45,29 +44,22 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
 
 def main(data_dir: str = "", ntrain: int = 3, **kwargs):
     args = Namespace(**locals())
-    model = select_model(max_input_length=2048, max_output_length=32, **kwargs)
+    # model = select_model(max_input_length=1360, max_output_length=1024, **kwargs)
+    model = select_model(max_input_length=1360, max_output_length=512, **kwargs)
     print(locals())
 
     dataset = read_problems()
-    result = evaluate(model, dataset, ntrain=ntrain)
+    result = evaluate(model, dataset, ntrain=ntrain, **kwargs)
 
     print(result)
 
 
 """
-
-p humaneval.py main --model_name seq_to_seq --model_path google/flan-t5-xl
+p humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 1
 {'pass@1': 0.0}
 
-p humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf
-{'pass@1': 0.0}
-
-p humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native
+p humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native --n_sample 1
 {'pass@1': 0.0061}
-
-p humaneval.py main --model_name chatglm --model_path THUDM/chatglm-6b
-{'pass@1': 0.0}
-
 """
 
 
