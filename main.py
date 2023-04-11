@@ -1,11 +1,12 @@
 from fire import Fire
 
-from bbh import main as bbh_main
-from mmlu import main as mmlu_main
+import bbh
+import mmlu
+import drop
 
 
 def main(task_name: str, **kwargs):
-    task_map = dict(mmlu=mmlu_main, bbh=bbh_main)
+    task_map = dict(mmlu=mmlu.main, bbh=bbh.main, drop=drop.main)
     task_fn = task_map.get(task_name)
     if task_fn is None:
         raise ValueError(f"{task_name}. Choose from {list(task_map.keys())}")
