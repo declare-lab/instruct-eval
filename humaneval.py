@@ -65,7 +65,7 @@ p humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-
 p humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native --n_sample 1
 {'pass@1': 0.105}
 
-p humaneval.py main  --model_name llama --model_path eachadea/vicuna-13b --n_sample 1 --use_8bit
+p humaneval.py main  --model_name llama --model_path eachadea/vicuna-13b --n_sample 1 --load_8bit
 {'pass@1': 0.152}
 
 """

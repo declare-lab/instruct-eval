@@ -30,14 +30,14 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 
 ### Results
 
-| Model Name | Model Path                                                                            | Paper                                                    | Parameters | MMLU Score | BBH Score |
-|------------|---------------------------------------------------------------------------------------|----------------------------------------------------------|------------|------------|-----------|
-| seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | [Link](https://arxiv.org/abs/2210.11416)                 | 3B         | 49.25      | 40.26     |
-| llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | [Link](https://vicuna.lmsys.org/)                        | 13B        | 49.70      | 37.17     |
-| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/) | 13B        | 44.60      | 34.68     |
-| llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | [Link](https://crfm.stanford.edu/2023/03/13/alpaca.html) | 7B         | 41.64      | 33.36     |
-| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | [Link](https://arxiv.org/abs/2302.13971)                 | 7B         | 35.22      | 30.96     |
-| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | [Link](https://arxiv.org/abs/2210.02414)                 | 6B         | 36.16      | 31.38     |
+| Model Name | Model Path                                                                            | Paper                                                    | Parameters | MMLU Score | BBH Score | HumanEval@1 |
+|------------|---------------------------------------------------------------------------------------|----------------------------------------------------------|------------|------------|-----------|-------------|
+| seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | [Link](https://arxiv.org/abs/2210.11416)                 | 3B         | 49.25      | 40.26     |                 |
+| llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | [Link](https://vicuna.lmsys.org/)                        | 13B        | 49.70      | 37.17     | 15.24           |
+| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/) | 13B        | 44.60      | 34.68     |                 |
+| llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | [Link](https://crfm.stanford.edu/2023/03/13/alpaca.html) | 7B         | 41.64      | 33.36     | 10.37           |
+| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | [Link](https://arxiv.org/abs/2302.13971)                 | 7B         | 35.22      | 30.96     | 10.37           |
+| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | [Link](https://arxiv.org/abs/2210.02414)                 | 6B         | 36.16      | 31.38     |                 |
 
 ### Example Usage
 
@@ -67,11 +67,11 @@ python main.py bbh --model_name llama --model_path eachadea/vicuna-13b --load_8b
 
 Evaluate on [Human Eval](https://github.com/openai/human-eval/tree/master/data) which includes 164 coding questions
 ```
-python humaneval.py main --model_name seq_to_seq --model_path google/flan-t5-xl
+python main.py humaneval  --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 1
+# {'pass@1': 0.10365853658536585}
 
-python humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf
-
-python humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native
+python main.py humaneval  --model_name llama --model_path eachadea/vicuna-13b --n_sample 1 --load_8bit
+# {'pass@1': 0.1524390243902439}
 
 ```
 ### Setup
