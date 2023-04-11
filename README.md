@@ -65,6 +65,15 @@ python main.py bbh --model_name llama --model_path eachadea/vicuna-13b --load_8b
 # 0.3717117791946168
 ```
 
+Evaluate on [Human Eval](https://github.com/openai/human-eval/tree/master/data) which includes 164 coding questions
+```
+python humaneval.py main --model_name seq_to_seq --model_path google/flan-t5-xl
+
+python humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf
+
+python humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native
+
+```
 ### Setup
 
 Install dependencies and download data.

@@ -18,7 +18,7 @@ class EvalModel(BaseModel, arbitrary_types_allowed=True):
     max_input_length: int = 512
     max_output_length: int = 512
 
-    def run(self, prompt: str) -> str:
+    def run(self, prompt: str, **kwargs) -> str:
         raise NotImplementedError
 
     def check_valid_length(self, text: str) -> bool:
@@ -44,10 +44,10 @@ class SeqToSeqModel(EvalModel):
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
 
-    def run(self, prompt: str) -> str:
+    def run(self, prompt: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
-        outputs = self.model.generate(**inputs, max_length=self.max_output_length)
+        outputs = self.model.generate(**inputs, max_length=self.max_output_length, **kwargs)
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     def check_valid_length(self, text: str) -> bool:
@@ -69,13 +69,14 @@ class CausalModel(SeqToSeqModel):
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
 
-    def run(self, prompt: str) -> str:
+    def run(self, prompt: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
         outputs = self.model.generate(
             **inputs,
             max_new_tokens=self.max_output_length,
             pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
+            **kwargs
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
@@ -101,7 +102,7 @@ class LlamaModel(SeqToSeqModel):
             if not self.load_8bit:
                 self.model.to(self.device)
 
-    def run(self, prompt: str) -> str:
+    def run(self, prompt: str, **kwargs) -> str:
         if self.use_template:
             template = (
                 "Below is an instruction that describes a task. "
@@ -117,6 +118,7 @@ class LlamaModel(SeqToSeqModel):
         outputs = self.model.generate(
             **inputs,
             max_new_tokens=self.max_output_length,
+            **kwargs
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
@@ -135,9 +137,9 @@ class ChatGLMModel(SeqToSeqModel):
             self.model.eval()
             self.model.to(self.device)
 
-    def run(self, prompt: str) -> str:
+    def run(self, prompt: str, **kwargs) -> str:
         self.load()
-        response, history = self.model.chat(self.tokenizer, prompt, history=[])
+        response, history = self.model.chat(self.tokenizer, prompt, history=[], **kwargs)
         return response
 
 
