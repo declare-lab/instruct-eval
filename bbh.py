@@ -100,6 +100,12 @@ python main.py bbh --model_name llama --model_path eachadea/vicuna-13b --load_8b
 python main.py bbh --model_name causal --model_path togethercomputer/GPT-NeoXT-Chat-Base-20B --load_8bit
 {'average': 0.30625775783670517}
 
+python main.py bbh --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit
+{'average': 0.4391247239073324}
+
+python main.py bbh --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xl
+{'average': 0.27024358682253424}
+
 """
 
 
