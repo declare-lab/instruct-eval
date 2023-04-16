@@ -1,6 +1,5 @@
 import json
 import random
-from argparse import Namespace
 from pathlib import Path
 from typing import List
 
@@ -127,7 +126,6 @@ def evaluate(model: EvalModel, data: DropData, ntrain: int) -> dict:
 
 
 def main(data_dir: str = "drop", ntrain: int = 3, **kwargs):
-    args = Namespace(**locals())
     model = select_model(max_input_length=2048, max_output_length=8, **kwargs)
     print(locals())
 
@@ -148,6 +146,7 @@ python main.py drop --model_name llama --model_path chavinlo/alpaca-native
 {'score': 0.2638027048528242}
 
 python main.py drop --model_name llama --model_path decapoda-research/llama-13b-hf --load_8bit
+{'score': 0.35338106603023073}
 """
 
 

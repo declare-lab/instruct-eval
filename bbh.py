@@ -106,6 +106,12 @@ python main.py bbh --model_name seq_to_seq --model_path google/flan-t5-xxl --loa
 python main.py bbh --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xl
 {'average': 0.27024358682253424}
 
+python main.py bbh --model_name causal --model_path databricks/dolly-v2-12b --load_8bit
+{'average': 0.3003781793255478}
+
+python main.py bbh --model_name llama --model_path wombat-7b-gpt4
+{'average': 0.32478557123866053}
+
 """
 
 

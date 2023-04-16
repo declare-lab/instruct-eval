@@ -265,6 +265,12 @@ Average accuracy: 0.446
 python main.py mmlu --model_name llama --model_path eachadea/vicuna-13b --load_8bit
 Average accuracy: 0.497
 
+python main.py mmlu --model_name causal --model_path databricks/dolly-v2-12b --load_8bit
+Average accuracy: 0.257
+
+python main.py mmlu --model_name llama --model_path wombat-7b-gpt4
+Average accuracy: 0.387
+
 """
 
 
