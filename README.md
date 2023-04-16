@@ -30,20 +30,20 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 
 ### Results
 
-| Model Name | Model Path                                                                            | Paper                                                    | Parameters | MMLU Score | BBH Score | HumanEval@1 |
-|------------|---------------------------------------------------------------------------------------|----------------------------------------------------------|------------|------------|-----------|-------------|
-| seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | [Link](https://arxiv.org/abs/2210.11416)                 | 3B         | 49.25      | 40.26     |                 |
-| llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | [Link](https://vicuna.lmsys.org/)                        | 13B        | 49.70      | 37.17     | 15.24           |
-| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/) | 13B        | 44.60      | 34.68     |                 |
-| llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | [Link](https://crfm.stanford.edu/2023/03/13/alpaca.html) | 7B         | 41.64      | 33.36     | 10.37           |
-| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | [Link](https://arxiv.org/abs/2302.13971)                 | 7B         | 35.22      | 30.96     | 10.37           |
-| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | [Link](https://arxiv.org/abs/2210.02414)                 | 6B         | 36.16      | 31.38     |                 |
+| Model Name | Model Path                                                                            | Paper                                                    | Size | MMLU  | BBH   | DROP | HumanEval |
+|------------|---------------------------------------------------------------------------------------|----------------------------------------------------------|------|-------|-------|------|-----------|
+| seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | [Link](https://arxiv.org/abs/2210.11416)                 | 3B   | 49.25 | 40.26 | 56.3 |           |
+| llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | [Link](https://vicuna.lmsys.org/)                        | 13B  | 49.70 | 37.17 | 32.9 | 15.24     |
+| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/) | 13B  | 44.60 | 34.68 |      |           |
+| llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | [Link](https://crfm.stanford.edu/2023/03/13/alpaca.html) | 7B   | 41.64 | 33.36 | 26.3 | 10.37     |
+| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | [Link](https://arxiv.org/abs/2302.13971)                 | 7B   | 35.22 | 30.96 |      | 10.37     |
+| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | [Link](https://arxiv.org/abs/2210.02414)                 | 6B   | 36.16 | 31.38 |      |           |
 
 ### Example Usage
 
 Evaluate on [Massive Multitask Language Understanding](https://huggingface.co/datasets/lukaemon/mmlu) (MMLU) which
-includes exam questions from 57 tasks such as
-mathematics, history, law, and medicine.
+includes exam questions from 57 tasks such as mathematics, history, law, and medicine.
+We use 5-shot direct prompting and measure the exact-match score.
 
 ```
 python main.py mmlu --model_name llama --model_path chavinlo/alpaca-native
@@ -54,26 +54,30 @@ python main.py mmlu --model_name seq_to_seq --model_path google/flan-t5-xl
 ```
 
 Evaluate on [Big Bench Hard](https://huggingface.co/datasets/lukaemon/bbh) (BBH) which includes 23 challenging tasks for
-which PaLM (540B) performs below an average human
-rater.
+which PaLM (540B) performs below an average human rater.
+We use 3-shot direct prompting and measure the exact-match score.
 
 ```
 python main.py bbh --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit
 # 0.3468942926723247
-
-python main.py bbh --model_name llama --model_path eachadea/vicuna-13b --load_8bit
-# 0.3717117791946168
 ```
 
-Evaluate on [Human Eval](https://github.com/openai/human-eval/tree/master/data) which includes 164 coding questions
-```
-python main.py humaneval  --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 1
-# {'pass@1': 0.10365853658536585}
+Evaluate on [DROP](https://huggingface.co/datasets/drop) which is a math question answering benchmark.
+We use 3-shot direct prompting and measure the exact-match score.
 
+```
+python main.py drop --model_name seq_to_seq --model_path google/flan-t5-xl 
+# 0.5632458233890215
+```
+
+Evaluate on [HumanEval](https://huggingface.co/datasets/openai_humaneval) which includes 164 coding questions.
+We use 0-shot direct prompting and measure the pass@1 score.
+
+```
 python main.py humaneval  --model_name llama --model_path eachadea/vicuna-13b --n_sample 1 --load_8bit
 # {'pass@1': 0.1524390243902439}
-
 ```
+
 ### Setup
 
 Install dependencies and download data.
