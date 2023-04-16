@@ -1,24 +1,36 @@
 from argparse import Namespace
-from typing import Dict
 
-from datasets import load_dataset, get_dataset_config_names, Dataset
 from fire import Fire
 from tqdm import tqdm
 
+from human_eval.data import write_jsonl, read_problems
+from human_eval.evaluation import evaluate_functional_correctness
 from modeling import select_model, EvalModel
 
-from human_eval.data import write_jsonl, read_problems, HUMAN_EVAL
-from human_eval.evaluate_functional_correctness import entry_point
 
-def evaluate(model: EvalModel, dataset: Dataset, ntrain: int, **kwargs) -> dict:
+def entry_point(
+    problem_file: str,
+    sample_file: str,
+    k: str = "1,10,100",
+    n_workers: int = 4,
+    timeout: float = 3.0,
+):
     """
-    This will generate two files:
-    f"humaneval_{model_name}_predictions.jsonl": output from model
-    f"humaneval_{model_name}_predictions.jsonl_result.jsonl": evaluation result using f"humaneval_{model_name}_predictions.jsonl"
+    Evaluates the functional correctness of generated samples, and writes
+    results to f"{sample_file}_results.jsonl.gz"
     """
+    k = list(map(int, k.split(",")))
+    results = evaluate_functional_correctness(
+        sample_file, k, n_workers, timeout, problem_file
+    )
 
-    n_sample = kwargs['n_sample']
-    best_temperature = {1:0.1, 10:0.6, 100:0.8}
+    return results
+
+
+def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
+    dataset = read_problems(data_path)
+    n_sample = kwargs["n_sample"]
+    best_temperature = {1: 0.1, 10: 0.6, 100: 0.8}
     samples = []
     progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
     for task_id in dataset:
@@ -29,32 +41,29 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int, **kwargs) -> dict:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
             else:
                 completion = model.run(prompt)
-            ## The program tends to overwrite, we only take the first function
-            sample = dict(task_id=task_id, completion=completion.split('\n\n')[0])
-            if i == 0: 
+            # The program tends to overwrite, we only take the first function
+            sample = dict(task_id=task_id, completion=completion.split("\n\n")[0])
+            if i == 0:
                 print(dataset[task_id])
                 print(sample)
             samples.append(sample)
             progress_bar.update(1)
     progress_bar.close()
 
-    model_name = model.model_path.split('/')[-1]
+    model_name = model.model_path.replace("/", "_")
     pred_filename = f"humaneval_{model_name}_predictions.jsonl"
     write_jsonl(pred_filename, samples)
     print("Evaluating...")
-    result = entry_point(pred_filename)
-
+    result = entry_point(problem_file=data_path, sample_file=pred_filename)
     return result
 
 
-def main(data_dir: str = "", ntrain: int = 3, **kwargs):
+def main(data_path: str = "human_eval/HumanEval.jsonl.gz", **kwargs):
     args = Namespace(**locals())
     model = select_model(max_input_length=1360, max_output_length=512, **kwargs)
     print(locals())
 
-    dataset = read_problems()
-    result = evaluate(model, dataset, ntrain=ntrain, **kwargs)
-
+    result = evaluate(model, data_path, **kwargs)
     print(result)
 
 

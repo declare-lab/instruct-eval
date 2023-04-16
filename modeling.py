@@ -15,6 +15,7 @@ from transformers import (
 
 
 class EvalModel(BaseModel, arbitrary_types_allowed=True):
+    model_path: str
     max_input_length: int = 512
     max_output_length: int = 512
 
@@ -47,7 +48,11 @@ class SeqToSeqModel(EvalModel):
     def run(self, prompt: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
-        outputs = self.model.generate(**inputs, max_length=self.max_output_length, **kwargs)
+        outputs = self.model.generate(
+            **inputs,
+            max_length=self.max_output_length,
+            **kwargs,
+        )
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     def check_valid_length(self, text: str) -> bool:
@@ -76,7 +81,7 @@ class CausalModel(SeqToSeqModel):
             **inputs,
             max_new_tokens=self.max_output_length,
             pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
-            **kwargs
+            **kwargs,
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
@@ -118,7 +123,7 @@ class LlamaModel(SeqToSeqModel):
         outputs = self.model.generate(
             **inputs,
             max_new_tokens=self.max_output_length,
-            **kwargs
+            **kwargs,
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
@@ -139,7 +144,12 @@ class ChatGLMModel(SeqToSeqModel):
 
     def run(self, prompt: str, **kwargs) -> str:
         self.load()
-        response, history = self.model.chat(self.tokenizer, prompt, history=[], **kwargs)
+        response, history = self.model.chat(
+            self.tokenizer,
+            prompt,
+            history=[],
+            **kwargs,
+        )
         return response
 
 

@@ -5,9 +5,9 @@ tqdm==4.65.0
 sentencepiece==0.1.97
 icetk==0.0.7  # ChatGLM
 cpm_kernels==1.0.11  # ChatGLM
-git+https://github.com/huggingface/transformers.git@057e1d74733f52817dc05b673a340b4e3ebea08c  # Llama
+transformers==4.28.1
 datasets==2.10.1
 bitsandbytes==0.37.2  # Load 8bit
 accelerate==0.17.1  # Load 8bit
+numpy==1.24.2
 # git+https://github.com/huggingface/peft.git@d8c3b6bca49e4aa6e0498b416ed9adc50cc1a5fd
--e ./human-eval # human-eval
