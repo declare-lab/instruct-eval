@@ -10,4 +10,4 @@ datasets==2.10.1
 bitsandbytes==0.37.2  # Load 8bit
 accelerate==0.17.1  # Load 8bit
 numpy==1.24.2
-# git+https://github.com/huggingface/peft.git@d8c3b6bca49e4aa6e0498b416ed9adc50cc1a5fd
+git+https://github.com/huggingface/peft.git@d8c3b6bca49e4aa6e0498b416ed9adc50cc1a5fd

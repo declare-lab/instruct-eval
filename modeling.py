@@ -1,6 +1,7 @@
 from typing import Optional
 
 from fire import Fire
+from peft import PeftModel
 from pydantic import BaseModel
 from transformers import (
     PreTrainedModel,
@@ -30,6 +31,7 @@ class SeqToSeqModel(EvalModel):
     model_path: str
     model: Optional[PreTrainedModel]
     tokenizer: Optional[PreTrainedTokenizer]
+    lora_path: str = ""
     device: str = "cuda"
     load_8bit: bool = False
 
@@ -103,6 +105,8 @@ class LlamaModel(SeqToSeqModel):
             if self.load_8bit:
                 args.update(device_map="auto", load_in_8bit=True)
             self.model = LlamaForCausalLM.from_pretrained(self.model_path, **args)
+            if self.lora_path:
+                self.model = PeftModel.from_pretrained(self.model, self.lora_path)
             self.model.eval()
             if not self.load_8bit:
                 self.model.to(self.device)
@@ -185,6 +189,7 @@ p modeling.py test_model --model_name chatglm --model_path THUDM/chatglm-6b
 p modeling.py test_model --model_name llama --model_path TheBloke/koala-7B-HF
 p modeling.py test_model --model_name llama --model_path eachadea/vicuna-13b --load_8bit
 p modeling.py test_model --model_name causal --model_path togethercomputer/GPT-NeoXT-Chat-Base-20B --load_8bit
+p modeling.py test_model --model_name llama --model_path huggyllama/llama-7b --lora_path tloen/alpaca-lora-7b
 """
 
 
