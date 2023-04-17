@@ -41,6 +41,8 @@ class SeqToSeqModel(EvalModel):
             if self.load_8bit:
                 args.update(device_map="auto", load_in_8bit=True)
             self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_path, **args)
+            if self.lora_path:
+                self.model = PeftModel.from_pretrained(self.model, self.lora_path)
             self.model.eval()
             if not self.load_8bit:
                 self.model.to(self.device)
@@ -190,6 +192,7 @@ p modeling.py test_model --model_name llama --model_path TheBloke/koala-7B-HF
 p modeling.py test_model --model_name llama --model_path eachadea/vicuna-13b --load_8bit
 p modeling.py test_model --model_name causal --model_path togethercomputer/GPT-NeoXT-Chat-Base-20B --load_8bit
 p modeling.py test_model --model_name llama --model_path huggyllama/llama-7b --lora_path tloen/alpaca-lora-7b
+p modeling.py test_model --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
 """
 
 
