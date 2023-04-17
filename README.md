@@ -36,10 +36,10 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 |            | [ChatGPT](https://openai.com/blog/chatgpt)                                            | [Link](https://arxiv.org/abs/2303.08774)                 | ?    | 70.0 |      | 64.1 | 48.1      |
 | seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                         | [Link](https://arxiv.org/abs/2210.11416)                 | 3B   | 49.2 | 40.2 | 56.3 |           |
 | llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                     | [Link](https://vicuna.lmsys.org/)                        | 13B  | 49.7 | 37.1 | 32.9 | 15.2      |
-| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/) | 13B  | 44.6 | 34.6 |      | 11.0      |
+| llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                 | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/) | 13B  | 44.6 | 34.6 | 28.3 | 11.0      |
 | llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)               | [Link](https://crfm.stanford.edu/2023/03/13/alpaca.html) | 7B   | 41.6 | 33.3 | 26.3 | 10.3      |
-| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | [Link](https://arxiv.org/abs/2302.13971)                 | 7B   | 35.2 | 30.9 |      | 10.3      |
-| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | [Link](https://arxiv.org/abs/2210.02414)                 | 6B   | 36.1 | 31.3 |      | 3.1       |
+| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf) | [Link](https://arxiv.org/abs/2302.13971)                 | 7B   | 35.2 | 30.9 | 27.6 | 10.3      |
+| chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                           | [Link](https://arxiv.org/abs/2210.02414)                 | 6B   | 36.1 | 31.3 | 44.2 | 3.1       |
 
 ### Example Usage
 
