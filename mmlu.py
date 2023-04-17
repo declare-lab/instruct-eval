@@ -269,7 +269,25 @@ python main.py mmlu --model_name causal --model_path databricks/dolly-v2-12b --l
 Average accuracy: 0.257
 
 python main.py mmlu --model_name llama --model_path wombat-7b-gpt4
-Average accuracy: 0.387
+Average accuracy: 0.330
+
+python main.py mmlu --model_name seq_to_seq --model_path declare-lab/flan-alpaca-gpt4-xl
+Average accuracy: 0.456
+
+python main.py mmlu --model_name llama --model_path huggyllama/llama-7b --lora_path tloen/alpaca-lora-7b
+Average accuracy: 0.359
+
+python main.py mmlu --model_name llama --model_path huggyllama/llama-7b --lora_path tloen/alpaca-lora-7b --load_8bit
+Average accuracy: 0.355
+
+python main.py mmlu --model_name llama --model_path huggyllama/llama-7b --lora_path chansung/gpt4-alpaca-lora-7b
+Average accuracy: 0.356
+
+python main.py mmlu --model_name llama --model_path huggyllama/llama-13b --lora_path chansung/gpt4-alpaca-lora-13b --load_8bit
+Average accuracy: 0.464
+
+python main.py mmlu --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
+Average accuracy: 0.493
 
 """
 

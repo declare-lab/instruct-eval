@@ -147,6 +147,16 @@ python main.py drop --model_name llama --model_path chavinlo/alpaca-native
 
 python main.py drop --model_name llama --model_path decapoda-research/llama-13b-hf --load_8bit
 {'score': 0.35338106603023073}
+
+python main.py drop --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit
+{'score': 0.28353221957040575}
+
+python main.py drop --model_name llama --model_path decapoda-research/llama-7b-hf
+{'score': 0.27653142402545744}
+
+python main.py drop --model_name chatglm --model_path THUDM/chatglm-6b
+{'score': 0.44200477326968973}
+
 """
 
 
