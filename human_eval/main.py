@@ -28,7 +28,7 @@ def entry_point(
 
 
 def filter_code(completion: str, model: EvalModel) -> str:
-    if 'chatglm' in model.model_path:
+    if "chatglm" in model.model_path:
         ## Remove boilerplate for the function
         return completion.split('"""\n')[-1].replace("`", "")
     else:
@@ -45,16 +45,19 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     for task_id in dataset:
         for i in range(n_sample):
             prompt = dataset[task_id]["prompt"]
-            prompt = 'Please complete the following Python code without providing any additional tasks such as testing or explanations\n' + prompt
+            prompt = (
+                "Please complete the following Python code without providing any additional tasks such as testing or explanations\n"
+                + prompt
+            )
             temperature = best_temperature[n_sample]
             if temperature > 0:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
             else:
                 completion = model.run(prompt)
             sample = dict(task_id=task_id, completion=filter_code(completion, model))
-            if i == 0: 
+            if i == 0:
                 print(prompt)
-                print('-'*100)
+                print("-" * 100)
                 print(filter_code(completion, model))
             samples.append(sample)
             progress_bar.update(1)
