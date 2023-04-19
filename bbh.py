@@ -112,6 +112,9 @@ python main.py bbh --model_name causal --model_path databricks/dolly-v2-12b --lo
 python main.py bbh --model_name llama --model_path wombat-7b-gpt4
 {'average': 0.32478557123866053}
 
+python main.py bbh --model_name causal --model_path OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5 --load_8bit
+{'average': 0.3008946837550956}
+
 """
 
 

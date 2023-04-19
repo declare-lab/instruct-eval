@@ -289,6 +289,12 @@ Average accuracy: 0.464
 python main.py mmlu --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
 Average accuracy: 0.493
 
+python main.py mmlu --model_name seq_to_seq --model_path bigscience/mt0-xl
+Average accuracy: 0.304
+
+python main.py mmlu --model_name causal --model_path OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5 --load_8bit
+Average accuracy: 0.270
+
 """
 
 
