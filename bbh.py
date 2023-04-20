@@ -115,6 +115,14 @@ python main.py bbh --model_name llama --model_path wombat-7b-gpt4
 python main.py bbh --model_name causal --model_path OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5 --load_8bit
 {'average': 0.3008946837550956}
 
+python main.py bbh --model_name seq_to_seq --model_path declare-lab/flan-alpaca-gpt4-xl
+{'average': 0.3481774107746648}
+
+python main.py bbh --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
+{'average': 0.280621115472374}
+
+python main.py bbh --model_name causal --model_path stabilityai/stablelm-base-alpha-7b
+
 """
 
 

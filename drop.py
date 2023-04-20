@@ -157,6 +157,12 @@ python main.py drop --model_name llama --model_path decapoda-research/llama-7b-h
 python main.py drop --model_name chatglm --model_path THUDM/chatglm-6b
 {'score': 0.44200477326968973}
 
+python main.py drop --model_name seq_to_seq --model_path declare-lab/flan-alpaca-gpt4-xl
+{'score': 0.28496420047732696}
+
+python main.py drop --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
+{'score': 0.36945107398568017}
+
 """
 
 
