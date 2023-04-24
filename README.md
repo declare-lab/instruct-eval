@@ -101,3 +101,18 @@ mkdir -p data
 wget https://people.eecs.berkeley.edu/~hendrycks/data.tar -O data/mmlu.tar
 tar -xf data/mmlu.tar -C data && mv data/data data/mmlu
 ```
+
+### Citation
+
+If this repository is helpful for your research, please consider citing us :)
+
+```
+@misc{flan-eval,
+  author = {Yew Ken Chia and Pengfei Hong and Soujanya Poria},
+  title = {Flan-Eval: Reproducible Held-Out Evaluation for Instruction Tuning},
+  year = {2023},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/declare-lab/flan-eval}},
+}
+```
