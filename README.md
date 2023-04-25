@@ -1,5 +1,7 @@
 ## 🍮 📚 Flan-Eval: Reproducible Held-Out Evaluation for Instruction Tuning
 
+📣 **FLAN-T5** is also useful in text-to-audio generation. Find our work at [https://github.com/declare-lab/tango](https://github.com/declare-lab/tango) if you are interested.
+
 This repository contains code to evaluate instruction-tuned models such as Alpaca and Flan-T5 on held-out
 tasks.
 We aim to facilitate simple and convenient benchmarking across multiple tasks and models.
