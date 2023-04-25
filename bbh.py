@@ -122,6 +122,16 @@ python main.py bbh --model_name seq_to_seq --model_path google/flan-t5-xl --lora
 {'average': 0.280621115472374}
 
 python main.py bbh --model_name causal --model_path stabilityai/stablelm-base-alpha-7b
+{'average': 0.27506399778710994}
+
+python main.py bbh --model_name llama --model_path huggyllama/llama-30b --load_8bit
+{'average': 0.39346261713538594}
+
+python main.py bbh --model_name llama --model_path huggyllama/llama-13b --load_8bit
+{'average': 0.3719930899679183}
+
+python main.py bbh --model_name causal --model_path Salesforce/codegen-6B-mono
+{'average': 0.29238637284403873}
 
 """
 

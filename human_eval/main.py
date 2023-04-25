@@ -91,6 +91,18 @@ p humaneval.py main  --model_name llama --model_path chavinlo/alpaca-native --n_
 p humaneval.py main  --model_name llama --model_path eachadea/vicuna-13b --n_sample 1 --load_8bit
 {'pass@1': 0.152}
 
+python main.py humaneval --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 1 --load_8bit
+{'pass@1': 0.10365853658536585}
+
+python main.py humaneval --model_name llama --model_path decapoda-research/llama-13b-hf --n_sample 1 --load_8bit
+{'pass@1': 0.12804878048780488}
+
+python main.py humaneval --model_name llama --model_path huggyllama/llama-13b --n_sample 1 --load_8bit
+{'pass@1': 0.12804878048780488}
+
+python main.py humaneval --model_name causal --model_path Salesforce/codegen-6B-mono --n_sample 1
+{'pass@1': 0.27439024390243905}
+
 """
 
 

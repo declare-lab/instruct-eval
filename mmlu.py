@@ -299,6 +299,13 @@ python main.py mmlu --model_name causal --model_path stabilityai/stablelm-base-a
 Average accuracy: 0.262
 
 python main.py mmlu --model_name llama --model_path huggyllama/llama-30b --load_8bit
+Average accuracy: 0.578                                                                                                                                                                        
+
+python main.py mmlu --model_name llama --model_path huggyllama/llama-13b --load_8bit
+Average accuracy: 0.462
+
+python main.py mmlu --model_name causal --model_path Salesforce/codegen-6B-mono
+Average accuracy: 0.261
 
 """
 
