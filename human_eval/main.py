@@ -38,7 +38,7 @@ def filter_code(completion: str, model: EvalModel) -> str:
 
 def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     dataset = read_problems(data_path)
-    n_sample = kwargs["n_sample"]
+    n_sample = kwargs.get("n_sample", 1)
     best_temperature = {1: 0.1, 10: 0.6, 100: 0.8}
     samples = []
     progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
@@ -56,8 +56,9 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
                 completion = model.run(prompt)
             sample = dict(task_id=task_id, completion=filter_code(completion, model))
             if i == 0:
+                print("Prompt: ", "-" * 100)
                 print(prompt)
-                print("-" * 100)
+                print("Completion: ", "-" * 100)
                 print(filter_code(completion, model))
             samples.append(sample)
             progress_bar.update(1)

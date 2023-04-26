@@ -39,18 +39,19 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 | seq_to_seq | [google/flan-t5-xxl](https://huggingface.co/google/flan-t5-xxl)                                                         | [Link](https://arxiv.org/abs/2210.11416)                                                                      | 11B  | 54.5 | 43.9 |      |           |
 | seq_to_seq | [google/flan-t5-xl](https://huggingface.co/google/flan-t5-xl)                                                           | [Link](https://arxiv.org/abs/2210.11416)                                                                      | 3B   | 49.2 | 40.2 | 56.3 |           |
 | llama      | [eachadea/vicuna-13b](https://huggingface.co/eachadea/vicuna-13b)                                                       | [Link](https://vicuna.lmsys.org/)                                                                             | 13B  | 49.7 | 37.1 | 32.9 | 15.2      |
-| llama      | [decapoda-research/llama-13b-hf](https://huggingface.co/decapoda-research/llama-13b-hf)                                 | [Link](https://arxiv.org/abs/2302.13971)                                                                      | 13B  | 46.2 | 37.1 | 35.3 |           |
+| llama      | [decapoda-research/llama-13b-hf](https://huggingface.co/decapoda-research/llama-13b-hf)                                 | [Link](https://arxiv.org/abs/2302.13971)                                                                      | 13B  | 46.2 | 37.1 | 35.3 | 13.4        |
 | seq_to_seq | [declare-lab/flan-alpaca-gpt4-xl](https://huggingface.co/declare-lab/flan-alpaca-gpt4-xl)                               | [Link](https://github.com/declare-lab/flan-alpaca)                                                            | 3B   | 45.6 | 34.8 |      |           |
 | llama      | [TheBloke/koala-13B-HF](https://huggingface.co/TheBloke/koala-13B-HF)                                                   | [Link](https://bair.berkeley.edu/blog/2023/04/03/koala/)                                                      | 13B  | 44.6 | 34.6 | 28.3 | 11.0      |
 | llama      | [chavinlo/alpaca-native](https://huggingface.co/chavinlo/alpaca-native)                                                 | [Link](https://crfm.stanford.edu/2023/03/13/alpaca.html)                                                      | 7B   | 41.6 | 33.3 | 26.3 | 10.3      |
 | chatglm    | [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)                                                             | [Link](https://arxiv.org/abs/2210.02414)                                                                      | 6B   | 36.1 | 31.3 | 44.2 | 3.1       |
-| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf)                                   | [Link](https://arxiv.org/abs/2302.13971)                                                                      | 7B   | 35.2 | 30.9 | 27.6 | 10.3      |
-| llama      | [wombat-7b-gpt4-delta](https://huggingface.co/GanjinZero/wombat-7b-gpt4-delta)                                          | [Link](https://arxiv.org/abs/2304.05302)                                                                      | 7B   | 33.0 | 32.4 |      |           |
+| llama      | [decapoda-research/llama-7b-hf](https://huggingface.co/decapoda-research/llama-7b-hf)                                   | [Link](https://arxiv.org/abs/2302.13971)                                                                      | 7B   | 35.2 | 30.9 | 27.6  |     10.3   |
+| llama      | [wombat-7b-gpt4-delta](https://huggingface.co/GanjinZero/wombat-7b-gpt4-delta)                                          | [Link](https://arxiv.org/abs/2304.05302)                                                                      | 7B   | 33.0 | 32.4 |      |   7.9     |
 | seq_to_seq | [bigscience/mt0-xl](https://huggingface.co/google/bigscience/mt0-xl)                                                    | [Link](https://arxiv.org/abs/2210.11416)                                                                      | 3B   | 30.4 |      |      |           |
-| causal     | [facebook/opt-iml-max-1.3b](https://huggingface.co/facebook/opt-iml-max-1.3b)                                           | [Link](https://arxiv.org/abs/2212.12017)                                                                      | 1B   | 27.5 |      |      |           |
+| causal     | [facebook/opt-iml-max-1.3b](https://huggingface.co/facebook/opt-iml-max-1.3b)                                           | [Link](https://arxiv.org/abs/2212.12017)                                                                      | 1B   | 27.5 |      |      |   1.8     |
 | causal     | [OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5](https://huggingface.co/OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5) | [Link](https://github.com/LAION-AI/Open-Assistant)                                                            | 12B  | 27.0 | 30.0 |      |           |
-| causal     | [stabilityai/stablelm-base-alpha-7b](https://huggingface.co/stabilityai/stablelm-base-alpha-7b)                         | [Link](https://github.com/Stability-AI/StableLM)                                                              | 7B   | 26.2 |      |      |           |
-| causal     | [databricks/dolly-v2-12b](https://huggingface.co/databricks/dolly-v2-12b)                                               | [Link](https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm) | 12B  | 25.7 |      |      |           |
+| causal     | [stabilityai/stablelm-base-alpha-7b](https://huggingface.co/stabilityai/stablelm-base-alpha-7b)                         | [Link](https://github.com/Stability-AI/StableLM)                                                              | 7B   | 26.2 |      |      |   1.8     |
+| causal     | [databricks/dolly-v2-12b](https://huggingface.co/databricks/dolly-v2-12b)                                               | [Link](https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm) | 12B  | 25.7 |      |      |   7.9     |
+| causal     | [Salesforce/codegen-6B-mono](https://huggingface.co/Salesforce/codegen-6B-mono)                                         | [Link](https://arxiv.org/abs/2203.13474)                                                                      | 6B   |      |      |      |   27.4    |
 
 ### Example Usage
 
@@ -83,7 +84,7 @@ python main.py drop --model_name seq_to_seq --model_path google/flan-t5-xl
 # 0.5632458233890215
 ```
 
-Evaluate on [HumanEval](https://huggingface.co/datasets/openai_humaneval) which includes 164 coding questions.
+Evaluate on [HumanEval](https://huggingface.co/datasets/openai_humaneval) which includes 164 coding questions in python.
 We use 0-shot direct prompting and measure the pass@1 score.
 
 ```
