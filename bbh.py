@@ -133,6 +133,9 @@ python main.py bbh --model_name llama --model_path huggyllama/llama-13b --load_8
 python main.py bbh --model_name causal --model_path Salesforce/codegen-6B-mono
 {'average': 0.29238637284403873}
 
+python main.py bbh --model_name llama --model_path TheBloke/wizardLM-7B-HF --load_8bit
+{'average': 0.32918965812558487}
+
 """
 
 

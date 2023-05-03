@@ -307,6 +307,15 @@ Average accuracy: 0.462
 python main.py mmlu --model_name causal --model_path Salesforce/codegen-6B-mono
 Average accuracy: 0.261
 
+python main.py mmlu --model_name llama --model_path TheBloke/wizardLM-7B-HF --load_8bit
+Average accuracy: 0.364
+
+python main.py mmlu --model_name causal --model_path facebook/opt-2.7b
+Average accuracy: 0.257
+
+python main.py mmlu --model_name seq_to_seq --model_path declare-lab/flan-sharegpt-xl
+Average accuracy: 0.446
+
 """
 
 
