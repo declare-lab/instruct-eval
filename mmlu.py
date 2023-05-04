@@ -316,6 +316,18 @@ Average accuracy: 0.257
 python main.py mmlu --model_name seq_to_seq --model_path declare-lab/flan-sharegpt-xl
 Average accuracy: 0.446
 
+python main.py mmlu --model_name causal --model_path ../FlanPaca/export/flan-opt-3b
+Average accuracy: 0.288
+
+python main.py mmlu --model_name causal --model_path ../FlanPaca/export/alpaca-opt-3b
+Average accuracy: 0.263
+
+python main.py mmlu --model_name seq_to_seq --model_path bigscience/T0pp --load_8bit
+Average accuracy: 0.368
+
+python main.py mmlu --model_name seq_to_seq --model_path google/t5-xl-lm-adapt
+Average accuracy: 0.233
+
 """
 
 

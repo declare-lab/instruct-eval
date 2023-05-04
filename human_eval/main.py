@@ -103,6 +103,12 @@ python main.py humaneval --model_name llama --model_path huggyllama/llama-13b --
 python main.py humaneval --model_name causal --model_path Salesforce/codegen-6B-mono --n_sample 1
 {'pass@1': 0.27439024390243905}
 
+python main.py humaneval --model_name llama --model_path TheBloke/wizardLM-7B-HF --n_sample 1
+{'pass@1': 0.1402439024390244}
+
+python main.py humaneval --model_name seq_to_seq --model_path google/flan-t5-xl --n_sample 1
+{'pass@1': 0.0}                                                        
+
 """
 
 

@@ -136,6 +136,18 @@ python main.py bbh --model_name causal --model_path Salesforce/codegen-6B-mono
 python main.py bbh --model_name llama --model_path TheBloke/wizardLM-7B-HF --load_8bit
 {'average': 0.32918965812558487}
 
+python main.py bbh --model_name causal --model_path ../FlanPaca/export/flan-opt-3b
+{'average': 0.2885727015589716}
+
+python main.py bbh --model_name causal --model_path ../FlanPaca/export/alpaca-opt-3b
+{'average': 0.29839096448936264}
+
+python main.py bbh --model_name causal --model_path facebook/opt-2.7b
+{'average': 0.2883221490772978}
+
+python main.py bbh --model_name seq_to_seq --model_path bigscience/T0pp --load_8bit
+{'average': 0.10846421143903981}
+
 """
 
 

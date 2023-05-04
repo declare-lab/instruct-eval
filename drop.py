@@ -163,6 +163,12 @@ python main.py drop --model_name seq_to_seq --model_path declare-lab/flan-alpaca
 python main.py drop --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
 {'score': 0.36945107398568017}
 
+python main.py drop --model_name llama --model_path TheBloke/wizardLM-7B-HF
+{'score': 0.2587112171837709}
+
+python main.py drop --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit
+{'score': 0.6728719172633254}
+
 """
 
 
