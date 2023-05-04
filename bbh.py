@@ -45,8 +45,7 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
         label = data_test["target"][i]
         pred = model.run(prompt)
         is_correct.append(pred.strip().startswith(label))
-        if i == 0:
-            print(dict(prompt=prompt, label=label, pred=pred))
+        print(dict(prompt=prompt, label=label, pred=pred))
 
     return dict(score=sum(is_correct) / len(is_correct))
 
@@ -147,6 +146,9 @@ python main.py bbh --model_name causal --model_path facebook/opt-2.7b
 
 python main.py bbh --model_name seq_to_seq --model_path bigscience/T0pp --load_8bit
 {'average': 0.10846421143903981}
+
+python main.py bbh --model_name openai --model_path VisualQuestionAnswering --use_azure
+{'average': 0.49579194980796804}
 
 """
 
