@@ -1,5 +1,8 @@
+import getpass
 from typing import Optional
 
+import openai
+import tiktoken
 from fire import Fire
 from peft import PeftModel
 from pydantic import BaseModel
@@ -23,8 +26,54 @@ class EvalModel(BaseModel, arbitrary_types_allowed=True):
     def run(self, prompt: str, **kwargs) -> str:
         raise NotImplementedError
 
-    def check_valid_length(self, text: str) -> bool:
+    def count_text_length(self, text: str) -> int:
         raise NotImplementedError
+
+    def check_valid_length(self, text: str) -> bool:
+        return self.count_text_length(text) <= self.max_input_length
+
+
+class OpenAIModel(EvalModel):
+    model_path: Optional[str]
+    api_key: Optional[str]
+    use_azure: bool = False
+    tokenizer: Optional[tiktoken.Encoding]
+    api_endpoint: str = "https://research.openai.azure.com/"
+    api_version: str = "2023-03-15-preview"
+
+    def load(self):
+        if self.tokenizer is None:
+            try:
+                self.tokenizer = tiktoken.encoding_for_model(self.model_path)
+            except Exception as e:
+                print(e)
+                self.tokenizer = tiktoken.get_encoding("cl100k_base")  # chatgpt/gpt-4
+
+        if self.use_azure:
+            openai.api_type = "azure"
+            openai.api_base = self.api_endpoint
+            openai.api_version = self.api_version
+            if self.model_path is None:
+                self.model_path = getpass.getpass("Model or deployment name: ")
+
+        if self.api_key is None:
+            self.api_key = getpass.getpass("API Key: ")
+        openai.api_key = self.api_key
+
+    def run(self, prompt: str, **kwargs) -> str:
+        self.load()
+        try:
+            response = openai.ChatCompletion.create(
+                engine=self.model_path,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            return str(e)
+
+    def count_text_length(self, text: str) -> int:
+        self.load()
+        return len(self.tokenizer.encode(text))
 
 
 class SeqToSeqModel(EvalModel):
@@ -59,10 +108,9 @@ class SeqToSeqModel(EvalModel):
         )
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    def check_valid_length(self, text: str) -> bool:
+    def count_text_length(self, text: str) -> int:
         self.load()
-        inputs = self.tokenizer(text)
-        return len(inputs.input_ids) <= self.max_input_length
+        return len(self.tokenizer(text).input_ids)
 
 
 class CausalModel(SeqToSeqModel):
@@ -165,6 +213,7 @@ def select_model(model_name: str, **kwargs) -> EvalModel:
         causal=CausalModel,
         llama=LlamaModel,
         chatglm=ChatGLMModel,
+        openai=OpenAIModel,
     )
     model_class = model_map.get(model_name)
     if model_class is None:
@@ -193,6 +242,7 @@ p modeling.py test_model --model_name llama --model_path eachadea/vicuna-13b --l
 p modeling.py test_model --model_name causal --model_path togethercomputer/GPT-NeoXT-Chat-Base-20B --load_8bit
 p modeling.py test_model --model_name llama --model_path huggyllama/llama-7b --lora_path tloen/alpaca-lora-7b
 p modeling.py test_model --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
+p modeling.py test_model --model_name openai --model_path VisualQuestionAnswering --use_azure
 """
 
 
