@@ -119,7 +119,9 @@ class CausalModel(SeqToSeqModel):
             args = {}
             if self.load_8bit:
                 args.update(device_map="auto", load_in_8bit=True)
-            self.model = AutoModelForCausalLM.from_pretrained(self.model_path, **args)
+            self.model = AutoModelForCausalLM.from_pretrained(
+                self.model_path, trust_remote_code=True, **args
+            )
             self.model.eval()
             if not self.load_8bit:
                 self.model.to(self.device)
