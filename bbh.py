@@ -150,6 +150,21 @@ python main.py bbh --model_name seq_to_seq --model_path bigscience/T0pp --load_8
 python main.py bbh --model_name openai --model_path VisualQuestionAnswering --use_azure
 {'average': 0.49579194980796804}
 
+python main.py bbh --model_name seq_to_seq --model_path bigscience/T0pp --load_8bit
+{'average': 0.10846421143903981}
+
+python main.py bbh --model_name llama --model_path TheBloke/OpenAssistant-SFT-7-Llama-30B-HF --load_8bit
+{'average': 0.3928688114157221}
+
+python main.py bbh --model_name causal --model_path stabilityai/stablelm-tuned-alpha-7b
+{'average': 0.2892898981686167}
+
+python main.py bbh --model_name causal --model_path bigscience/bloomz-7b1
+{'average': 0.2527831178060011}
+
+python main.py bbh --model_name seq_to_seq --model_path google/flan-ul2 --load_8bit
+{'average': 0.4479251941380086}
+
 """
 
 

@@ -109,6 +109,15 @@ python main.py humaneval --model_name llama --model_path TheBloke/wizardLM-7B-HF
 python main.py humaneval --model_name seq_to_seq --model_path google/flan-t5-xl --n_sample 1
 {'pass@1': 0.0}                                                        
 
+python main.py humaneval --model_name causal --model_path stabilityai/stablelm-tuned-alpha-7b --n_sample 1
+{'pass@1': 0.054878048780487805}
+
+python main.py humaneval --model_name llama --model_path TheBloke/OpenAssistant-SFT-7-Llama-30B-HF --load_8bit
+{'pass@1': 0.23170731707317074}
+
+python main.py humaneval --model_name causal --model_path ../FlanPaca/export/flan-codegen-3b
+{'pass@1': 0.15853658536585366}
+
 """
 
 

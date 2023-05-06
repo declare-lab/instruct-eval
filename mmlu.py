@@ -328,6 +328,24 @@ Average accuracy: 0.368
 python main.py mmlu --model_name seq_to_seq --model_path google/t5-xl-lm-adapt
 Average accuracy: 0.233
 
+python main.py mmlu --model_name llama --model_path TheBloke/OpenAssistant-SFT-7-Llama-30B-HF --load_8bit
+Average accuracy: 0.569
+
+python main.py mmlu --model_name causal --model_path stabilityai/stablelm-tuned-alpha-7b
+Average accuracy: 0.244
+
+python main.py mmlu --model_name causal --model_path bigscience/bloomz-7b1
+Average accuracy: 0.372
+
+python main.py mmlu --model_name seq_to_seq --model_path google/flan-ul2 --load_8bit
+Average accuracy: 0.550
+
+python main.py mmlu --model_name causal --model_path ../FlanPaca/export/flan-codegen-3b
+Average accuracy: 0.294
+
+python main.py mmlu --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit
+Average accuracy: 0.492
+
 """
 
 

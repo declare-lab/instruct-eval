@@ -169,6 +169,21 @@ python main.py drop --model_name llama --model_path TheBloke/wizardLM-7B-HF
 python main.py drop --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit
 {'score': 0.6728719172633254}
 
+python main.py drop --model_name causal --model_path Salesforce/codegen-6B-mono
+{'score': 0.1280827366746221}
+
+python main.py drop --model_name seq_to_seq --model_path bigscience/T0pp --load_8bit
+{'score': 0.016070007955449484}
+
+python main.py drop --model_name llama --model_path TheBloke/OpenAssistant-SFT-7-Llama-30B-HF --load_8bit
+{'score': 0.46046141607000796}
+
+python main.py drop --model_name causal --model_path stabilityai/stablelm-tuned-alpha-7b
+{'score': 0.1271280827366746}
+
+python main.py drop --model_name causal --model_path bigscience/bloomz-7b1
+{'score': 0.23182179793158314}
+
 """
 
 
