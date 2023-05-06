@@ -133,6 +133,7 @@ def main(data_dir: str = "drop", ntrain: int = 3, **kwargs):
     data = DropData.load_from_huggingface()
     result = evaluate(model, data, ntrain=ntrain)
     print(result)
+    return result["score"]
 
 
 """

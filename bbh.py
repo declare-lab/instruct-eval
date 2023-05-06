@@ -1,39 +1,60 @@
 from argparse import Namespace
-from typing import Dict
+from typing import List
 
-from datasets import load_dataset, get_dataset_config_names, Dataset
+from datasets import load_dataset, get_dataset_config_names
 from fire import Fire
+from pydantic import BaseModel
 from tqdm import tqdm
 
 from modeling import select_model, EvalModel
 
 
-def format_example(dataset: Dict[str, list], idx: int, include_answer=True):
-    prompt = dataset["input"][idx]
-    prompt += "\nAnswer:"
-    if include_answer:
-        prompt += " {}\n\n".format(dataset["target"][idx])
-    return prompt
+class BBHSample(BaseModel):
+    input: str
+    target: str
+
+    def as_prompt(self, include_answer: bool = True):
+        prompt = self.input
+        prompt += "\nAnswer:"
+        if include_answer:
+            prompt += " {}\n\n".format(self.target)
+        return prompt
 
 
-def gen_prompt(dataset: Dict[str, list], k=-1):
+class BBHData(BaseModel):
+    samples: List[BBHSample]
+
+    @classmethod
+    def get_config_names(cls, path: str = "lukaemon/bbh") -> List[str]:
+        return get_dataset_config_names(path)
+
+    @classmethod
+    def load_from_huggingface(
+        cls, path: str = "lukaemon/bbh", config: str = "", split: str = "test"
+    ):
+        data = load_dataset(path, config, split=split)
+        samples = [BBHSample(**raw) for raw in tqdm(data, desc=str((path, split)))]
+        return cls(samples=samples)
+
+
+def gen_prompt(data: BBHData, k=-1):
     prompt = ""
     if k == -1:
-        k = len(dataset)
+        k = len(data.samples)
     for i in range(k):
-        prompt += format_example(dataset, i)
+        prompt += data.samples[i].as_prompt()
     return prompt
 
 
-def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
-    data_train = dataset[:ntrain]
-    data_test = dataset[ntrain:]
+def evaluate(model: EvalModel, data: BBHData, ntrain: int) -> dict:
+    data_train = BBHData(samples=data.samples[:ntrain])
+    data_test = BBHData(samples=data.samples[ntrain:])
     is_correct = []
 
-    for i in range(len(dataset) - ntrain):
+    for i in range(len(data_test.samples)):
         # get prompt and make sure it fits
         k = int(ntrain)
-        prompt_end = format_example(data_test, i, include_answer=False)
+        prompt_end = data_test.samples[i].as_prompt(include_answer=False)
         train_prompt = gen_prompt(data_train, k)
         prompt = train_prompt + prompt_end
 
@@ -42,10 +63,11 @@ def evaluate(model: EvalModel, dataset: Dataset, ntrain: int) -> dict:
             train_prompt = gen_prompt(data_train, k)
             prompt = train_prompt + prompt_end
 
-        label = data_test["target"][i]
+        label = data_test.samples[i].target
         pred = model.run(prompt)
         is_correct.append(pred.strip().startswith(label))
-        print(dict(prompt=prompt, label=label, pred=pred))
+        if i == 0:
+            print(dict(prompt=prompt, label=label, pred=pred))
 
     return dict(score=sum(is_correct) / len(is_correct))
 
@@ -56,13 +78,15 @@ def main(data_dir: str = "lukaemon/bbh", ntrain: int = 3, **kwargs):
     print(locals())
 
     all_results = []
-    for name in tqdm(get_dataset_config_names(data_dir)):
-        dataset = load_dataset(data_dir, name, split="test")
-        result = evaluate(model, dataset, ntrain=ntrain)
+    for name in tqdm(BBHData.get_config_names()):
+        data = BBHData.load_from_huggingface(config=name)
+        result = evaluate(model, data, ntrain=ntrain)
         all_results.append(result)
         print(dict(name=name, **result))
 
-    print(dict(average=sum(res["score"] for res in all_results) / len(all_results)))
+    score = sum(res["score"] for res in all_results) / len(all_results)
+    print(dict(average=score))
+    return score
 
 
 """

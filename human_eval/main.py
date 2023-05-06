@@ -79,6 +79,7 @@ def main(data_path: str = "human_eval/HumanEval.jsonl.gz", **kwargs):
 
     result = evaluate(model, data_path, **kwargs)
     print(result)
+    return result["pass@1"]
 
 
 """
