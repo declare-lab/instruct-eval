@@ -245,7 +245,9 @@ class RWKVModel(EvalModel):
         state = None
         token = None
 
-        ctx = f"Bob: {prompt.strip()}\n\nAlice:"  # Special prompt format
+        # ctx = f"Bob: {prompt.strip()}\n\nAlice:"
+        ctx = prompt  # Special format has lower few-shot performance
+
         for i in range(self.max_output_length):
             tokens = self.model.encode(ctx) if i == 0 else [token]
 
@@ -269,7 +271,6 @@ class RWKVModel(EvalModel):
             if "\n\n" in tmp:
                 break  # exit when '\n\n'
 
-        breakpoint()
         return out_str
 
     def count_text_length(self, text: str) -> int:
