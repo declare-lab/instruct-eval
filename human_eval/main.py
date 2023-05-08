@@ -119,6 +119,12 @@ python main.py humaneval --model_name llama --model_path TheBloke/OpenAssistant-
 python main.py humaneval --model_name causal --model_path ../FlanPaca/export/flan-codegen-3b
 {'pass@1': 0.15853658536585366}
 
+python main.py humaneval --model_name llama --model_path huggyllama/llama-30b --load_8bit
+{'pass@1': 0.1402439024390244}
+
+python main.py humaneval --model_name causal --model_path facebook/opt-iml-30b --load_8bit --n_sample 1
+{'pass@1': 0.09146341463414634}
+
 """
 
 

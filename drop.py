@@ -185,6 +185,15 @@ python main.py drop --model_name causal --model_path stabilityai/stablelm-tuned-
 python main.py drop --model_name causal --model_path bigscience/bloomz-7b1
 {'score': 0.23182179793158314}
 
+python main.py drop --model_name llama --model_path huggyllama/llama-30b --load_8bit
+{'score': 0.45425616547334924}
+
+python main.py drop --model_name causal --model_path facebook/opt-iml-30b --load_8bit
+{'score': 0.4758949880668258}
+
+python main.py drop --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl --load_8bit
+{'score': 0.6233890214797136}
+
 """
 
 

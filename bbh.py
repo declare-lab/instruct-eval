@@ -189,6 +189,12 @@ python main.py bbh --model_name causal --model_path bigscience/bloomz-7b1
 python main.py bbh --model_name seq_to_seq --model_path google/flan-ul2 --load_8bit
 {'average': 0.4479251941380086}
 
+python main.py bbh --model_name causal --model_path facebook/opt-iml-30b --load_8bit
+{'average': 0.31348283464988275}
+
+python main.py bbh --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl --load_8bit
+{'average': 0.23395300775163477}
+
 """
 
 
