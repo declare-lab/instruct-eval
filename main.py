@@ -1,13 +1,20 @@
 from fire import Fire
 
 import bbh
+import crass
 import drop
 import mmlu
 from human_eval.main import main as humaneval
 
 
 def main(task_name: str, **kwargs):
-    task_map = dict(mmlu=mmlu.main, bbh=bbh.main, drop=drop.main, humaneval=humaneval)
+    task_map = dict(
+        mmlu=mmlu.main,
+        bbh=bbh.main,
+        drop=drop.main,
+        humaneval=humaneval,
+        crass=crass.main,
+    )
 
     if task_name == "all":
         results = {}
