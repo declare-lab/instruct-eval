@@ -54,6 +54,7 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 | causal     | [stabilityai/stablelm-base-alpha-7b](https://huggingface.co/stabilityai/stablelm-base-alpha-7b)                         | [Link](https://github.com/Stability-AI/StableLM)                                                              | 7B   | 26.2 |      |      | 1.8       |
 | causal     | [databricks/dolly-v2-12b](https://huggingface.co/databricks/dolly-v2-12b)                                               | [Link](https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm) | 12B  | 25.7 |      |      | 7.9       |
 | causal     | [Salesforce/codegen-6B-mono](https://huggingface.co/Salesforce/codegen-6B-mono)                                         | [Link](https://arxiv.org/abs/2203.13474)                                                                      | 6B   |      |      |      | 27.4      |
+  | causal     | [togethercomputer/RedPajama-INCITE-Instruct-7B-v0.1](https://huggingface.co/togethercomputer/RedPajama-INCITE-Instruct-7B-v0.1) | [Link](https://github.com/togethercomputer/RedPajama-Data)                                                             | 7B   | 38.1 | 31.3 | 24.7 | 5.5      |
 
 ### Example Usage
 
