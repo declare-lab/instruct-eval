@@ -5,22 +5,28 @@ from typing import Optional
 import openai
 import rwkv
 import tiktoken
+import torch
+import torch.nn as nn
+import transformers
 from fire import Fire
 from peft import PeftModel
 from pydantic import BaseModel
 from rwkv.model import RWKV
 from rwkv.utils import PIPELINE
 from torchvision.datasets.utils import download_url
+from transformers import AutoTokenizer
 from transformers import (
     PreTrainedModel,
     PreTrainedTokenizer,
     AutoModelForSeq2SeqLM,
-    AutoTokenizer,
     AutoModelForCausalLM,
     LlamaForCausalLM,
     LlamaTokenizer,
     AutoModel,
+    LlamaConfig,
 )
+
+import quant
 
 
 class EvalModel(BaseModel, arbitrary_types_allowed=True):
@@ -181,6 +187,15 @@ class LlamaModel(SeqToSeqModel):
 
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
+        if "65b" in self.model_path.lower():
+            self.max_input_length = 1024
+            inputs = self.tokenizer(
+                text,
+                return_tensors="pt",
+                truncation=True,
+                max_length=self.max_input_length,
+            ).to(self.device)
+
         outputs = self.model.generate(
             **inputs,
             max_new_tokens=self.max_output_length,
@@ -188,6 +203,108 @@ class LlamaModel(SeqToSeqModel):
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
+
+
+def find_layers(module, layers=(nn.Conv2d, nn.Linear), name=""):
+    if type(module) in layers:
+        return {name: module}
+    res = {}
+    for name1, child in module.named_children():
+        res.update(
+            find_layers(
+                child, layers=layers, name=name + "." + name1 if name != "" else name1
+            )
+        )
+    return res
+
+
+def noop(*args, **kwargs):
+    assert args is not None
+    assert kwargs is not None
+
+
+def load_quant(
+    model,
+    checkpoint,
+    wbits,
+    groupsize=-1,
+    fused_mlp=True,
+    warmup_autotune=True,
+):
+    config = LlamaConfig.from_pretrained(model)
+    torch.nn.init.kaiming_uniform_ = noop
+    torch.nn.init.uniform_ = noop
+    torch.nn.init.normal_ = noop
+    torch.set_default_dtype(torch.half)
+    transformers.modeling_utils._init_weights = False
+    torch.set_default_dtype(torch.half)
+    model = LlamaForCausalLM(config)
+    torch.set_default_dtype(torch.float)
+    model = model.eval()
+
+    layers = find_layers(model)
+    for name in ["lm_head"]:
+        if name in layers:
+            del layers[name]
+
+    quant.make_quant_linear(model, layers, wbits, groupsize)
+    del layers
+
+    print("Loading model ...")
+    if checkpoint.endswith(".safetensors"):
+        from safetensors.torch import load_file as safe_load
+
+        model.load_state_dict(safe_load(checkpoint), strict=False)
+    else:
+        model.load_state_dict(torch.load(checkpoint), strict=False)
+
+    if eval:
+        quant.make_quant_attn(model)
+        quant.make_quant_norm(model)
+        if fused_mlp:
+            quant.make_fused_mlp(model)
+    if warmup_autotune:
+        quant.autotune_warmup_linear(model, transpose=not (eval))
+        if eval and fused_mlp:
+            quant.autotune_warmup_fused(model)
+
+    model.seqlen = 2048
+    print("Done.")
+    return model
+
+
+class GPTQModel(LlamaModel):
+    quantized_path: str
+    model: Optional[LlamaForCausalLM]
+    tokenizer: Optional[LlamaTokenizer]
+    num_bits: int = 4
+    group_size: int = 128
+
+    def load(self):
+        # https://github.com/qwopqwop200/GPTQ-for-LLaMa/blob/05781593c818d4dc8adc2d32c975e83d17d2b9a8/llama_inference.py
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
+        if not Path(self.quantized_path).exists():
+            url = f"https://huggingface.co/{self.model_path}/resolve/main/{self.quantized_path}"
+            download_url(url, root=".")
+
+        if self.model is None:
+            self.model = load_quant(
+                model=self.model_path,
+                checkpoint=self.quantized_path,
+                wbits=self.num_bits,
+                groupsize=self.group_size,
+            )
+            self.model.to(self.device)
+
+        if self.tokenizer is None:
+            self.tokenizer = LlamaTokenizer.from_pretrained(self.model_path)
+            self.test_max_length()
+
+    def test_max_length(self):
+        # Detect any OOMs at the beginning
+        text = " ".join(["test sentence for max length"] * 1000)
+        self.run(text)
 
 
 class ChatGLMModel(SeqToSeqModel):
@@ -286,6 +403,7 @@ def select_model(model_name: str, **kwargs) -> EvalModel:
         chatglm=ChatGLMModel,
         openai=OpenAIModel,
         rwkv=RWKVModel,
+        gptq=GPTQModel,
     )
     model_class = model_map.get(model_name)
     if model_class is None:
@@ -317,6 +435,7 @@ p modeling.py test_model --model_name seq_to_seq --model_path google/flan-t5-xl 
 p modeling.py test_model --model_name openai --model_path VisualQuestionAnswering --use_azure
 p modeling.py test_model --model_name rwkv --model_path https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v11-Eng99%25-Other1%25-20230427-ctx8192.pth
 p modeling.py test_model --model_name causal --model_path mosaicml/mpt-7b-instruct
+p modeling.py test_model --model_name gptq --model_path TheBloke/alpaca-lora-65B-GPTQ-4bit --quantized_path alpaca-lora-65B-GPTQ-4bit-128g.safetensors
 """
 
 
