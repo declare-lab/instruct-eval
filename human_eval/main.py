@@ -36,6 +36,30 @@ def filter_code(completion: str, model: EvalModel) -> str:
         return completion.split("\n\n")[0]
 
 
+def count_indent(text: str) -> int:
+    count = 0
+    for char in text:
+        if char == " ":
+            count += 1
+        else:
+            break
+    return count
+
+
+def fix_indents(text: str, multiple: int = 2):
+    outputs = []
+    for line in text.split("\n"):
+        while count_indent(line) % multiple != 0:
+            line = " " + line
+        outputs.append(line)
+    return "\n".join(outputs)
+
+
+def test_fix_indents():
+    text = "   # TODO: Implement separate_paren_groups\nreturn []"
+    print(fix_indents(text))
+
+
 def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     dataset = read_problems(data_path)
     n_sample = kwargs.get("n_sample", 1)
@@ -54,6 +78,8 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
             else:
                 completion = model.run(prompt)
+
+            completion = fix_indents(completion)
             sample = dict(task_id=task_id, completion=filter_code(completion, model))
             if i == 0:
                 print("Prompt: ", "-" * 100)
