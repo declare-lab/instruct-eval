@@ -33,7 +33,18 @@ def filter_code(completion: str, model: EvalModel) -> str:
         return completion.split('"""\n')[-1].replace("`", "")
     else:
         ## The program tends to overwrite, we only take the first function
+        completion = completion.lstrip('\n')
         return completion.split("\n\n")[0]
+
+def gen_prompt(prompt: str, model: EvalModel) -> str:
+    if "starcoder" in model.model_path:
+        prompt = "<fim_prefix>" + prompt + "<fim_suffix><fim_middle>"
+    else:
+        prompt = (
+            "Please complete the following Python code without providing any additional tasks such as testing or explanations\n"
+            + prompt
+        )
+    return prompt
 
 
 def count_indent(text: str) -> int:
@@ -69,10 +80,7 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     for task_id in dataset:
         for i in range(n_sample):
             prompt = dataset[task_id]["prompt"]
-            prompt = (
-                "Please complete the following Python code without providing any additional tasks such as testing or explanations\n"
-                + prompt
-            )
+            prompt = gen_prompt(prompt, model)
             temperature = best_temperature[n_sample]
             if temperature > 0:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
