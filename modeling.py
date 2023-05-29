@@ -53,6 +53,7 @@ class OpenAIModel(EvalModel):
     tokenizer: Optional[tiktoken.Encoding]
     api_endpoint: str = "https://research.openai.azure.com/"
     api_version: str = "2023-03-15-preview"
+    timeout: int = 60
 
     def load(self):
         if self.tokenizer is None:
@@ -63,11 +64,11 @@ class OpenAIModel(EvalModel):
                 self.tokenizer = tiktoken.get_encoding("cl100k_base")  # chatgpt/gpt-4
 
         if self.use_azure:
+            if self.model_path is None:
+                self.model_path = "VisualQuestionAnswering"
             openai.api_type = "azure"
             openai.api_base = self.api_endpoint
             openai.api_version = self.api_version
-            if self.model_path is None:
-                self.model_path = getpass.getpass("Model or deployment name: ")
 
         if self.api_key is None:
             self.api_key = getpass.getpass("API Key: ")
@@ -75,14 +76,23 @@ class OpenAIModel(EvalModel):
 
     def run(self, prompt: str, **kwargs) -> str:
         self.load()
-        try:
-            response = openai.ChatCompletion.create(
-                engine=self.model_path,
-                messages=[{"role": "user", "content": prompt}],
-            )
-            return response.choices[0].message.content
-        except Exception as e:
-            return str(e)
+        output = ""
+
+        while not output:
+            try:
+                response = openai.ChatCompletion.create(
+                    engine=self.model_path,
+                    messages=[{"role": "user", "content": prompt}],
+                    timeout=self.timeout,
+                    request_timeout=self.timeout,
+                )
+                output = response.choices[0].message.content
+            except Exception as e:
+                print(e)
+            if not output:
+                print("OpenAIModel request failed, retrying.")
+
+        return output
 
     def count_text_length(self, text: str) -> int:
         self.load()
@@ -173,11 +183,16 @@ class CausalModel(SeqToSeqModel):
             if not self.load_8bit:
                 self.model.to(self.device)
         if self.tokenizer is None:
-            self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_path, trust_remote_code=True
+            )
 
     def run(self, prompt: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        if "RWForCausalLM" in str(type(self.model)):
+            inputs.pop("token_type_ids")  # Not used by Falcon model
+
         outputs = self.model.generate(
             **inputs,
             max_new_tokens=self.max_output_length,
