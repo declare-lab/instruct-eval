@@ -271,11 +271,51 @@ def main(data_path: str = "Anthropic/hh-rlhf", **kwargs):
 
 
 """
-p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir helpful-base --focus helpful
-p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir harmless-base --focus harmless
-p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir helpful-base --focus both
-p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir harmless-base --focus both
 p hhh.py main --model_name openai --model_path VisualQuestionAnswering --use_azure
+
+p hhh.py main --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit --data_dir helpful-base --focus helpful
+>> 0.5739, A: 764, B: 630
+p hhh.py main --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit --data_dir helpful-base --focus both
+>> 0.543
+p hhh.py main --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit --data_dir helpful-base --focus
+>> 0.5818, A: 581, B: 813
+p hhh.py main --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit --data_dir harmless-base --focus harmless
+>> 0.4468, A: 785, B: 634
+p hhh.py main --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit --data_dir harmless-base --focus
+>> 0.4595, A: 606, B: 813
+p hhh.py main --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit --data_dir harmless-base --focus both
+>> 0.463
+
+p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir  harmless-base --focus harmless
+>> 0.4602, A: 781, B: 638
+p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir  harmless-base --focus
+>> 0.4792, A: 645, B: 774
+p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir  harmless-base --focus both
+>> 0.4630, A: 778, B: 641
+p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir  helpful-base --focus helpful
+>> 0.5438, A: 853, B: 541
+p hhh.py main --model_name llama --model_path TheBloke/koala-13B-HF --load_8bit --data_dir  helpful-base --focus
+>> 0.5961, A: 607, B: 787
+
+p hhh.py main --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit --data_dir harmless-base --focus 
+>> 0.4571, A: 575, B: 869
+p hhh.py main --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit --data_dir harmless-base --focus both
+>> 0.4363, A: 585, B: 859
+p hhh.py main --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit --data_dir both  --focus
+>> 0.5645
+p hhh.py main --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit --data_dir helpful-base --focus
+>> 0.6410, A: 585, B: 844
+
+p hhh.py main --model_name llama --model_path decapoda-research/llama-7b-hf --load_8bit --data_dir helpful-base --focus
+>> 0.5481, A: 529, B: 865
+p hhh.py main --model_name llama --model_path decapoda-research/llama-7b-hf --load_8bit --data_dir harmless-base --focus
+>> 0.4440, A: 572, B: 847
+
+p hhh.py main --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl --load_8bit --data_dir helpful-base --focus
+>> 0.6536, A: 541, B: 888
+p hhh.py main --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl --load_8bit --data_dir harmless-base --focus
+>> 0.4335, A: 576, B: 868
+
 """
 
 if __name__ == "__main__":
