@@ -123,6 +123,19 @@ class SeqToSeqModel(EvalModel):
         self.load()
         return len(self.tokenizer(text).input_ids)
 
+    def get_choice(self, text: str, **kwargs) -> str:
+        self.load()
+        inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
+        predictions = self.model(
+            **inputs,
+            **kwargs,
+        ).logits[0, -1]
+        A_index = self.tokenizer("A", add_special_tokens=False).input_ids[0]
+        B_index = self.tokenizer("B", add_special_tokens=False).input_ids[0]
+        A = float(predictions[A_index].cpu())
+        B = float(predictions[B_index].cpu())
+        return A, B
+
 
 class CausalModel(SeqToSeqModel):
     def load(self):
@@ -150,6 +163,19 @@ class CausalModel(SeqToSeqModel):
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
+    def get_choice(self, text: str, **kwargs) -> str:
+        self.load()
+        inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
+        predictions = self.model(
+            **inputs,
+            pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
+            **kwargs,
+        ).logits[0, -1]
+        A_index = self.tokenizer("A", add_special_tokens=False).input_ids[0]
+        B_index = self.tokenizer("B", add_special_tokens=False).input_ids[0]
+        A = float(predictions[A_index].cpu())
+        B = float(predictions[B_index].cpu())
+        return A, B
 
 
 class LlamaModel(SeqToSeqModel):
@@ -203,6 +229,19 @@ class LlamaModel(SeqToSeqModel):
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
+
+    def get_choice(self, text: str, **kwargs) -> str:
+        self.load()
+        inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
+        predictions = self.model(
+            **inputs,
+            **kwargs,
+        ).logits[0, -1]
+        A_index = self.tokenizer("A", add_special_tokens=False).input_ids[0]
+        B_index = self.tokenizer("B", add_special_tokens=False).input_ids[0]
+        A = float(predictions[A_index].cpu())
+        B = float(predictions[B_index].cpu())
+        return A, B
 
 
 def find_layers(module, layers=(nn.Conv2d, nn.Linear), name=""):
