@@ -126,10 +126,13 @@ class SeqToSeqModel(EvalModel):
     def get_choice(self, text: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
-        predictions = self.model(
-            **inputs,
-            **kwargs,
-        ).logits[0, -1]
+        start_token = torch.tensor([[self.tokenizer.pad_token_id]], dtype=torch.long).to(self.device)
+        with torch.no_grad():
+            predictions = self.model(
+                **inputs,
+                decoder_input_ids=start_token,
+                **kwargs,
+            ).logits[0, 0]
         A_index = self.tokenizer("A", add_special_tokens=False).input_ids[0]
         B_index = self.tokenizer("B", add_special_tokens=False).input_ids[0]
         A = float(predictions[A_index].cpu())
@@ -166,11 +169,12 @@ class CausalModel(SeqToSeqModel):
     def get_choice(self, text: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
-        predictions = self.model(
-            **inputs,
-            pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
-            **kwargs,
-        ).logits[0, -1]
+        with torch.no_grad():
+            predictions = self.model(
+                **inputs,
+                pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
+                **kwargs,
+            ).logits[0, -1]
         A_index = self.tokenizer("A", add_special_tokens=False).input_ids[0]
         B_index = self.tokenizer("B", add_special_tokens=False).input_ids[0]
         A = float(predictions[A_index].cpu())
@@ -233,10 +237,11 @@ class LlamaModel(SeqToSeqModel):
     def get_choice(self, text: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
-        predictions = self.model(
-            **inputs,
-            **kwargs,
-        ).logits[0, -1]
+        with torch.no_grad():
+            predictions = self.model(
+                **inputs,
+                **kwargs,
+            ).logits[0, -1]
         A_index = self.tokenizer("A", add_special_tokens=False).input_ids[0]
         B_index = self.tokenizer("B", add_special_tokens=False).input_ids[0]
         A = float(predictions[A_index].cpu())
