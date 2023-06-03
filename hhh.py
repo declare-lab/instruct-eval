@@ -316,6 +316,8 @@ p hhh.py main --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl -
 p hhh.py main --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl --load_8bit --data_dir harmless-base --focus
 >> 0.4335, A: 576, B: 868
 
+p hhh.py main --model_name seq_to_seq --model_path google/flan-ul2 --load_8bit --data_dir both --focus
+>> 0.56.0
 """
 
 if __name__ == "__main__":

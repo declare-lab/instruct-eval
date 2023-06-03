@@ -172,7 +172,6 @@ class CausalModel(SeqToSeqModel):
         with torch.no_grad():
             predictions = self.model(
                 **inputs,
-                pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
                 **kwargs,
             ).logits[0, -1]
         A_index = self.tokenizer("A", add_special_tokens=False).input_ids[0]
