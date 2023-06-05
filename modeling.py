@@ -1,8 +1,10 @@
 import getpass
+import time
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 
 import openai
+import signal
 import rwkv
 import tiktoken
 import torch
@@ -85,7 +87,25 @@ class OpenAIModel(EvalModel):
     def count_text_length(self, text: str) -> int:
         self.load()
         return len(self.tokenizer.encode(text))
+    def get_choice(self, prompt: str, **kwargs) -> str:
+        self.load()
+        def handler(signum, frame): raise Exception("Timeout")
+        signal.signal(signal.SIGALRM, handler)
 
+        for i in range(3): # try 5 times
+            signal.alarm(2) # 5 seconds
+            try:
+                response = openai.ChatCompletion.create(
+                    engine=self.model_path,
+                    messages=[{"role": "user", "content": prompt}],
+                )
+                return response.choices[0].message.content
+            except Exception as e:
+                if 'content management policy' in str(e):
+                    break
+                else:
+                    time.sleep(3)
+        return 'Z'
 
 class SeqToSeqModel(EvalModel):
     model_path: str
@@ -123,7 +143,7 @@ class SeqToSeqModel(EvalModel):
         self.load()
         return len(self.tokenizer(text).input_ids)
 
-    def get_choice(self, text: str, **kwargs) -> str:
+    def get_choice(self, text: str, **kwargs) -> Tuple[int]:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         start_token = torch.tensor([[self.tokenizer.pad_token_id]], dtype=torch.long).to(self.device)
@@ -166,7 +186,7 @@ class CausalModel(SeqToSeqModel):
         )
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
-    def get_choice(self, text: str, **kwargs) -> str:
+    def get_choice(self, text: str, **kwargs) -> Tuple[int]:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         with torch.no_grad():
@@ -233,7 +253,7 @@ class LlamaModel(SeqToSeqModel):
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
 
-    def get_choice(self, text: str, **kwargs) -> str:
+    def get_choice(self, text: str, **kwargs) -> Tuple[int]:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         with torch.no_grad():
