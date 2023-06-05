@@ -305,6 +305,21 @@ p hhh.py main --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl -
 {'harmless': 0.7241, 'honest': 0.7869, 'helpful': 0.8305, 'other': 0.8372}
 {'harmless': 0.7586, 'honest': 0.7705, 'helpful': 0.7966, 'other': 0.814}
 
+wombat official
+{'harmless': 0.3103, 'honest': 0.4754, 'helpful': 0.5254, 'other': 0.5581}
+{'harmless': 0.3276, 'honest': 0.3934, 'helpful': 0.4068, 'other': 0.5581}
+{'harmless': 0.4138, 'honest': 0.4426, 'helpful': 0.5254, 'other': 0.5116}
+{'harmless': 0.3448, 'honest': 0.459, 'helpful': 0.4746, 'other': 0.6047}
+wombat none
+{'harmless': 0.3793, 'honest': 0.5082, 'helpful': 0.5932, 'other': 0.5116}
+{'harmless': 0.4138, 'honest': 0.4426, 'helpful': 0.5254, 'other': 0.5116}
+{'harmless': 0.3966, 'honest': 0.4918, 'helpful': 0.6441, 'other': 0.5349}
+{'harmless': 0.3793, 'honest': 0.4754, 'helpful': 0.6441, 'other': 0.4884}
+
+Dolly V2 none
+{'harmless': 0.4483, 'honest': 0.459, 'helpful': 0.5424, 'other': 0.5349}
+{'harmless': 0.5517, 'honest': 0.4754, 'helpful': 0.678, 'other': 0.6279}
+{'harmless': 0.5517, 'honest': 0.4754, 'helpful': 0.5763, 'other': 0.5814}
 """
 
 if __name__ == "__main__":
