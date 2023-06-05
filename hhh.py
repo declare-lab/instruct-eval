@@ -320,6 +320,24 @@ Dolly V2 none
 {'harmless': 0.4483, 'honest': 0.459, 'helpful': 0.5424, 'other': 0.5349}
 {'harmless': 0.5517, 'honest': 0.4754, 'helpful': 0.678, 'other': 0.6279}
 {'harmless': 0.5517, 'honest': 0.4754, 'helpful': 0.5763, 'other': 0.5814}
+
+tk-instruct official
+{'harmless': 0.7414, 'honest': 0.6721, 'helpful': 0.5932, 'other': 0.7209}
+{'harmless': 0.7069, 'honest': 0.623, 'helpful': 0.5254, 'other': 0.7442}
+{'harmless': 0.7586, 'honest': 0.6557, 'helpful': 0.4576, 'other': 0.7209}
+tk-instruct none
+{'harmless': 0.7241, 'honest': 0.6393, 'helpful': 0.6102, 'other': 0.7674}
+{'harmless': 0.6897, 'honest': 0.5902, 'helpful': 0.4915, 'other': 0.7674}
+{'harmless': 0.6897, 'honest': 0.6393, 'helpful': 0.5424, 'other': 0.7442}
+
+flan-ul2 official
+{'harmless': 0.7931, 'honest': 0.6557, 'helpful': 0.7797, 'other': 0.7907}
+{'harmless': 0.8103, 'honest': 0.6885, 'helpful': 0.7288, 'other': 0.8837}
+{'harmless': 0.7759, 'honest': 0.7049, 'helpful': 0.7966, 'other': 0.8605}
+flan-ul2 none
+{'harmless': 0.7759, 'honest': 0.7213, 'helpful': 0.7288, 'other': 0.907}
+{'harmless': 0.7931, 'honest': 0.7377, 'helpful': 0.7288, 'other': 0.8837}
+{'harmless': 0.7759, 'honest': 0.7213, 'helpful': 0.6949, 'other': 0.907}
 """
 
 if __name__ == "__main__":
