@@ -165,15 +165,18 @@ def main(**kwargs):
     model = select_model(max_input_length=1024, max_output_length=2, **kwargs)
     print(locals())
 
-    result = dict()
+    results = []
+    for _ in range(kwargs["nruns"]):
+        result = dict()
 
-    for o in ['harmless', 'honest', 'helpful', 'other']:
-        data_path = f'./data/{o}/task.json'
-        data = load_data(data_path)
-        score = evaluate(model, data, **kwargs)
-        result[o] = score
-    print(result)
-    return result
+        for o in ['harmless', 'honest', 'helpful', 'other']:
+            data_path = f'./data/{o}/task.json'
+            data = load_data(data_path)
+            score = evaluate(model, data, **kwargs)
+            result[o] = score
+        print(result)
+        results.append(result)
+    return results
 
 """
 p hhh.py main --model_name openai --model_path VisualQuestionAnswering --use_azure --focus official
