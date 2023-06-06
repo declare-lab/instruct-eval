@@ -338,6 +338,32 @@ flan-ul2 none
 {'harmless': 0.7759, 'honest': 0.7213, 'helpful': 0.7288, 'other': 0.907}
 {'harmless': 0.7931, 'honest': 0.7377, 'helpful': 0.7288, 'other': 0.8837}
 {'harmless': 0.7759, 'honest': 0.7213, 'helpful': 0.6949, 'other': 0.907}
+
+alpaca official
+{'harmless': 0.4483, 'honest': 0.5082, 'helpful': 0.6271, 'other': 0.6047}
+{'harmless': 0.569, 'honest': 0.459, 'helpful': 0.5424, 'other': 0.5581}
+{'harmless': 0.5517, 'honest': 0.4098, 'helpful': 0.5763, 'other': 0.5349}
+{'harmless': 0.5517, 'honest': 0.5082, 'helpful': 0.5763, 'other': 0.6047}
+{'harmless': 0.5345, 'honest': 0.4918, 'helpful': 0.6949, 'other': 0.6047}
+alpaca none
+{'harmless': 0.5345, 'honest': 0.5738, 'helpful': 0.5593, 'other': 0.4884}
+{'harmless': 0.4828, 'honest': 0.5574, 'helpful': 0.6102, 'other': 0.5349}
+{'harmless': 0.4655, 'honest': 0.4262, 'helpful': 0.6102, 'other': 0.5581}
+{'harmless': 0.5345, 'honest': 0.5082, 'helpful': 0.6271, 'other': 0.4419}
+{'harmless': 0.4483, 'honest': 0.5082, 'helpful': 0.6102, 'other': 0.4884}
+
+vicuna official
+{'harmless': 0.569, 'honest': 0.5738, 'helpful': 0.5763, 'other': 0.6744}
+{'harmless': 0.6207, 'honest': 0.6721, 'helpful': 0.5763, 'other': 0.6977}
+{'harmless': 0.5862, 'honest': 0.6393, 'helpful': 0.6271, 'other': 0.7442}
+{'harmless': 0.5862, 'honest': 0.5082, 'helpful': 0.5254, 'other': 0.7674}
+{'harmless': 0.6207, 'honest': 0.6557, 'helpful': 0.5424, 'other': 0.7209}
+vicuna none
+{'harmless': 0.5, 'honest': 0.5738, 'helpful': 0.661, 'other': 0.7674}
+{'harmless': 0.5862, 'honest': 0.5574, 'helpful': 0.7797, 'other': 0.7674}
+{'harmless': 0.6379, 'honest': 0.541, 'helpful': 0.6271, 'other': 0.7907}
+{'harmless': 0.6034, 'honest': 0.541, 'helpful': 0.7458, 'other': 0.814}
+{'harmless': 0.6897, 'honest': 0.541, 'helpful': 0.6949, 'other': 0.7674}
 """
 
 if __name__ == "__main__":
