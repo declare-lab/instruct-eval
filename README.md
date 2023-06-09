@@ -1,5 +1,7 @@
 ## 🍮 📚 Flan-Eval: Reproducible Held-Out Evaluation for Instruction Tuning
 
+📣 The paper explaining **InstructEval** has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
+
 📣 **FLAN-T5** is also useful in text-to-audio generation. Find our work
 at [https://github.com/declare-lab/tango](https://github.com/declare-lab/tango) if you are interested.
 
