@@ -36,6 +36,7 @@ def filter_code(completion: str, model: EvalModel) -> str:
         completion = completion.lstrip('\n')
         return completion.split("\n\n")[0]
 
+
 def gen_prompt(prompt: str, model: EvalModel) -> str:
     if "starcoder" in model.model_path:
         prompt = "<fim_prefix>" + prompt + "<fim_suffix><fim_middle>"
@@ -44,6 +45,8 @@ def gen_prompt(prompt: str, model: EvalModel) -> str:
             "Please complete the following Python code without providing any additional tasks such as testing or explanations\n"
             + prompt
         )
+    if 'starchat' in model.model_path:
+        prompt = f"<|system|>\n<|end|>\n<|user|>{prompt}<|end|>\n<|assistant|>"
     return prompt
 
 
