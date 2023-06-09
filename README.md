@@ -1,4 +1,4 @@
-## 🍮 📚 Flan-Eval: Reproducible Held-Out Evaluation for Instruction Tuning
+## 🍮 📚 InstructEval: Towards Holistic Evaluation of Instruction-Tuned Large Language Models
 
 📣 The paper reporting Instruction Tuned LLMs on **InstructEval** benchmark suit has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
 
