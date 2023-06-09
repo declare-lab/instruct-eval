@@ -1,6 +1,6 @@
 ## 🍮 📚 InstructEval: Towards Holistic Evaluation of Instruction-Tuned Large Language Models
 
-📣 The paper reporting Instruction Tuned LLMs on **InstructEval** benchmark suit has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
+📣 The paper reporting Instruction Tuned LLMs on **InstructEval** benchmark suite has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
 
 📣 **FLAN-T5** is also useful in text-to-audio generation. Find our work
 at [https://github.com/declare-lab/tango](https://github.com/declare-lab/tango) if you are interested.
