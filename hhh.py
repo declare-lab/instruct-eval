@@ -117,7 +117,7 @@ def evaluate(model: EvalModel, data: List[HHHDataset], print_result: bool = Fals
 
     openai = True if model.model_path == "VisualQuestionAnswering" else False
 
-
+    answers = []
     for i, o in enumerate(data):
 
         base_prompt, prompt = o.to_prompt(focus=kwargs["focus"])
@@ -141,11 +141,14 @@ def evaluate(model: EvalModel, data: List[HHHDataset], print_result: bool = Fals
                 num_B += 1
             else:
                 num_other += 1
-                # pred = random.choice(["A", "B"])
+                answers.append((i, None))
                 continue
 
         if pred == o.label:
             count += 1
+            answers.append((i, True))
+        else:
+            answers.append((i, False))
         total += 1
         if i % 100 == 1 and print_result:
             print(prompt, pred, 'Label:', o.label)
@@ -157,7 +160,7 @@ def evaluate(model: EvalModel, data: List[HHHDataset], print_result: bool = Fals
             A: {num_A}, B: {num_B}, other: {num_other}")
         pbar.update(1)
 
-    return round(count / total, 4)
+    return round(count / total, 4), answers
 
 
 def main(**kwargs):
@@ -166,15 +169,14 @@ def main(**kwargs):
     print(locals())
 
     results = []
-    for _ in range(kwargs["nruns"]):
+    for _ in range(kwargs.get("nruns", 1)):
         result = dict()
 
         for o in ['harmless', 'honest', 'helpful', 'other']:
             data_path = f'./data/{o}/task.json'
             data = load_data(data_path)
-            score = evaluate(model, data, **kwargs)
+            score, answers = evaluate(model, data, **kwargs)
             result[o] = score
-        print(result)
         results.append(result)
     return results
 
