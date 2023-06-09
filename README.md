@@ -2,6 +2,8 @@
 
 📣 The paper reporting Instruction Tuned LLMs on **InstructEval** benchmark suite has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
 
+📣 We are releasing **IMPACT**, a dataset for evaluating writing capability of LLMs in four aspects: Informative, Professional, Argumentative, Creative. Download it from Huggingface: [https://huggingface.co/datasets/declare-lab/InstructEvalImpact](https://huggingface.co/datasets/declare-lab/InstructEvalImpact). 
+
 📣 **FLAN-T5** is also useful in text-to-audio generation. Find our work
 at [https://github.com/declare-lab/tango](https://github.com/declare-lab/tango) if you are interested.
 
