@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>InstructEval Leaderboard</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWV023WWP4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VWV023WWP4');
+    </script>
+
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png">
+    <link href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 50px 20px;
+            background-color: #f7f7f2;
+            color: #4e4e4e;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        #branding {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        #branding h1 {
+            margin: 0;
+            font-size: 2.2em;
+            color: #4a4a4a;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #888;
+        }
+
+        table {
+            width: 100%;
+            margin: auto;
+            overflow: auto;
+            font-size: 0.9em;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            word-wrap: break-word;
+            vertical-align: middle;
+            text-align: left;
+        }
+
+        table th {
+            border-bottom: 2px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #e8e8e8;
+        }
+
+        .switch-toggle {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .switch-toggle input+label {
+            padding: 10px 12px;
+            margin-right: 5px;
+            cursor: pointer;
+            background-color: #e4e4e4;
+            border: 1px solid transparent;
+            font-size: 16px;
+            transition: all 0.2s;
+            border-radius: 5px;
+        }
+
+        .switch-toggle input:checked+label {
+            border-color: #4caf50;
+            color: #4caf50;
+            background-color: #f2f2f2;
+        }
+
+        .switch-toggle input:not(:checked)+label:hover {
+            color: #4caf50;
+            box-shadow: none !important;
+            user-select: none;
+            background-color: #f2f2f2;
+        }
+
+        .toggle-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 17px;
+        }
+
+        .toggle-line .switch-toggle {
+            margin: 0 10px;
+        }
+
+        a {
+            color: #4caf50;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        a:hover {
+            color: #4caf50;
+            text-decoration: underline;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="branding">
+            <h1>InstructEval
+                <a href="https://github.com/declare-lab/instruct-eval">
+                    <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png"
+                        alt="Logo" style="height: 2em; vertical-align: middle;"></a>
+                Leaderboard
+            </h1>
+            <br>
+            <h2>An Evaluation Suite for Instructed Language Models</h2>
+        </div>
+
+        <div style="text-align: center;">
+                <a href="https://github.com/declare-lab/instruct-eval" style="display: inline-block;">
+                    <i class="fab fa-github"></i> Github
+                </a>
+
+                <a href="https://arxiv.org/abs/2306.04757" style="display: inline-block;"> 
+                   <i class="far fa-file"></i> Paper 
+                </a>
+            </div>
+        <div class="toggle-line">
+
+            Benchmark:
+            <div class="switch-toggle switch-evaluator" style="margin-right: 4em">
+            <input id="solving" name="evaluator" type="radio" checked="checked" value="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/problem_solving_leaderboard.csv" onchange="updateTable(this.value)" />
+                <label for="solving" onclick="">Problem Solving</label>
+                <input id="writing" name="evaluator" type="radio" value="", onchange="updateTable(this.value)"/>
+                <label for="writing" onclick="">General Writing</label>
+                <input id="alignment" name="evaluator" type="radio" value="", onchange="updateTable(this.value)" />
+                <label for="alignment" onclick="">Alignment</label>
+            </div>
+
+        </div>
+
+        <table id="leaderboard">
+        </table>
+
+
+        <div id="documentation">
+
+            <br><br>
+
+            <h2>Why?</h2>
+
+            <p>
+            Instruction-tuned models such as <a href="https://github.com/tatsu-lab/alpaca_eval">Flan-T5</a> and <a href="https://crfm.stanford.edu/2023/03/13/alpaca.html">Alpaca</a> represent an exciting direction to approximate the performance of large language models (LLMs) like ChatGPT at lower cost. However, as the internal workings of many proprietary LLMs such as GPT-4 is still unknown, research community yet to reach a holistic understanding of instructed LLMs.
+            <br><br>
+            To reduce the knowledge gap, we need to know how diverse factors can contribute to their behavior and performance, such as pretraining, instruction data, and training methods. To address these challenges, we create InstructEval, a more comprehensive evaluation suite designed specifically for instruction-tuned large language models. Our evaluation involves a rigorous assessment of models based on problem-solving, writing ability, and alignment to human values.
+            <br><br>
+            Compared to existing libraries such as <a href="https://github.com/EleutherAI/lm-evaluation-harness">evaluation-harness</a> and <a href="https://github.com/stanford-crfm/helm">HELM</a>, Our  <a href="https://github.com/declare-lab/instruct-eval">Github</a> enables simple and convenient evaluation for multiple models. Notably, we support most models from HuggingFace Transformers 🤗
+            </p>
+            <pre>
+            @article{chia2023instructeval,
+            title = {INSTRUCTEVAL: Towards Holistic Evaluation of Instruction-Tuned Large Language Models},
+            author = {Yew Ken Chia and Pengfei Hong and Lidong Bing and Soujanya Poria},
+            journal = {arXiv preprint arXiv:2306.04757},
+            year = {2023}
+            }
+            </pre>
+            <h2> Details </h2>
+            <p>
+            <b> Problem Solving benchmark datasets: </b> <br>
+            <a href="https://arxiv.org/pdf/2009.03300v3.pdf">MMLU</a> benchmark is designed to measure world knowledge and problem-solving ability in multiple subjects. <br>
+            <a href="https://github.com/google/BIG-bench"> BIG-Bench Hard (BBH) </a> is a subset of 23 challenging tasks from the BIG-Bench benchmark, which focuses on tasks believed to be beyond the capabilities of current language models. It requires models to follow challenging instructions such as navigation, logical deduction, and fallacy detection. <br>
+            <a href="https://aclanthology.org/N19-1246/">Discrete Reasoning Over Paragraphs (DROP)</a> s a math-based reading comprehension task that requires a system to perform discrete reasoning over passages extracted from Wikipedia articles.<br>
+            <a href="https://github.com/openai/human-eval">HumanEval</a> is a problem-solving benchmark used for evaluating large language models trained on code.<br>
+            <a href="https://aclanthology.org/2022.lrec-1.229/">Counterfactual Reasoning Assessment (CRASS)</a> benchmark is a novel dataset and evaluation tool designed to test the causal reasoning capabilities of large language models.<br>
+            <br><br>
+
+            <b> Writing Evaluation: </b> <br>
+            We evaluate general writing ability across diverse usage scenarios for informative writing, professional writing, argumentative writing, and creative writing. The dataset is published here <a href="https://huggingface.co/datasets/declare-lab/InstructEvalImpact">IMPACT</a>. We use ChatGPT to judge the quality of the generated answers and each answer is scored on a Likert scale from 1 to 5. <br>
+            <br><br>
+
+            <b> Alignment to Human Values </b>: <a href="https://github.com/google/BIG-bench/tree/main/bigbench/benchmark_tasks/hhh_alignment">Helpful, Honest, and Harmless (HHH) benchmark</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        const solvingRadio = document.getElementById('solving');
+        const writingRadio = document.getElementById('writing');
+        const alignmentRadio = document.getElementById('alignment');
+
+        const table = document.getElementById('leaderboard');
+
+        const urls = {
+            'solving': "https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/problem_solving_leaderboard.csv",
+            'writing': "https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/writing_leaderboard.csv",
+            'alignment': "https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/alignment_leaderboard.csv",
+        }
+
+        let currentUrl = urls['solving'];
+
+        let globalData = [];
+
+        function updateTable(url) {   
+            Papa.parse(url, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    globalData = results.data;
+                    // Filter out empty rows
+                    globalData = globalData.filter(row => Object.values(row).some(value => value !== ""));
+                    displayData(globalData);
+                }
+            });
+        }
+
+        function displayData(data) {
+            let table = document.getElementById('leaderboard');
+
+            // Clear out previous data
+            table.innerHTML = '';
+
+            // Create header row
+            let headerRow = document.createElement('tr');
+            data[0] && Object.keys(data[0]).forEach(key => {
+                let headerCell = document.createElement('th');
+                headerCell.innerText = key;
+                headerCell.onclick = function() { sortTable(key); }; // On click, sort table by this column
+                headerRow.appendChild(headerCell);
+            });
+            table.appendChild(headerRow);
+
+            // Create data rows
+            data.forEach(row => {
+                let dataRow = document.createElement('tr');
+                Object.values(row).forEach(val => {
+                    let dataCell = document.createElement('td');
+                    // Check if the value is a markdown link
+                    let match = val.match(/\[([^\]]+)\]\(([^)]+)\)/);
+                    if (match) {
+                        let link = document.createElement('a');
+                        link.href = match[2];
+                        link.innerText = match[1];
+                        dataCell.appendChild(link);
+                    } else {
+                        dataCell.innerText = val;
+                    }
+                    dataRow.appendChild(dataCell);
+                });
+                table.appendChild(dataRow);
+            });
+        }
+
+        function sortTable(sortKey) {
+            // Sort the global data array based on sortKey
+            globalData.sort((a, b) => {
+                // Type checking and comparison
+                let valueA = isNaN(a[sortKey]) ? a[sortKey].toLowerCase() : +a[sortKey];
+                let valueB = isNaN(b[sortKey]) ? b[sortKey].toLowerCase() : +b[sortKey];
+
+                if(valueA < valueB) return 1;
+                if(valueA > valueB) return -1;
+                return 0;
+            });
+
+            // Redisplay the sorted table
+            displayData(globalData);
+        }
+
+        updateTable(urls['solving']);
+
+        solvingRadio.addEventListener('click', function () {
+            currentUrl = urls['solving'];
+            updateTable(currentUrl);
+        });
+
+        writingRadio.addEventListener('click', function () {
+            currentUrl = urls['writing'];
+            updateTable(currentUrl);
+        });
+
+        alignmentRadio.addEventListener('click', function () {
+            currentUrl = urls['alignment'];
+            updateTable(currentUrl);
+        });
+
+
+    </script>
+
+
+</body>
+
+</html>

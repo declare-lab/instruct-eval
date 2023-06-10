@@ -1,0 +1,63 @@
+Model,Foundation,Parameters (B),MMLU,BBH,DROP,CRASS,HumanEval,Average
+Human,,,89.8,94.4,94.1,98.2,,
+[GPT-4](https://openai.com/gpt-4),,,86.4,,80.9,,67.0,
+[Palm 2 Instruct](https://ai.google/static/documents/palm2techreport.pdf),,,81.2,69.1,85.0,,,
+[ChatGPT](https://chat.openai.com),,,70.0,49.6,64.1,90.5,48.1,64.5
+,,,,,,,,
+[LLaMA](https://huggingface.co/decapoda-research/llama-65b-hf),LLaMA,65,62.6,42.6,51.0,54.4,7.3,43.6
+[Alpaca Lora](https://huggingface.co/TheBloke/alpaca-lora-65B-GPTQ-4bit),LLaMA,65,61.7,45.7,51.0,68.6,23.2,50.0
+[GPT4 Alpaca Lora](https://huggingface.co/TheBloke/gpt4-alpaca-lora-30b-HF),LLaMA,30,58.4,41.3,45.1,79.2,18.9,48.6
+[OpenAssistant](https://huggingface.co/TheBloke/OpenAssistant-SFT-7-Llama-30B-HF),LLaMA,30,56.9,39.2,46.0,67.2,23.1,46.5
+[LLaMA](https://huggingface.co/decapoda-research/llama-30b-hf),LLaMA,30,57.8,39.3,45.4,68.6,14.0,45.0
+[GPT4 Alpaca Lora GPTQ](https://huggingface.co/TheBloke/gpt4-alpaca-lora-30B-GPTQ-4bit-128g),,,,,,80.3,,
+[Flan-UL2](https://huggingface.co/google/flan-ul2),UL2,20,55.0,44.7,64.3,94.2,0.0,51.6
+[Flan UL2 Alpaca Lora](https://huggingface.co/VMware/flan-ul2-alpaca-lora),UL2,20,45.7,39.2,54.3,91.2,0.0,46.1
+[Flan UL2 Dolly Lora](http://coniferlabs/flan-ul2-dolly-lora),UL2,20,52.2,41.8,53.5,90.9,0.0,47.7
+[OPT IML](https://huggingface.co/facebook/opt-iml-30b),OPT,30,38.6,31.3,47.5,67.2,9.1,38.7
+[OPT](https://huggingface.co/facebook/opt-30b),OPT,30,27.3,28.3,19.5,34.7,1.2,22.2
+[Flan-Alpaca](https://huggingface.co/http://declare-lab/flan-alpaca-xxl),T5,11,50.9,23.3,62.3,90.2,0.0,45.3
+[Flan-T5-XXL](https://huggingface.co/google/flan-t5-xxl/tree/main),T5,11,54.5,43.9,67.2,88.3,0.0,50.8
+[TK-Instruct](https://huggingface.co/allenai/tk-instruct-11b-def-pos),T5,11,41.1,32.9,28.6,31.4,0.0,26.8
+[T0](https://huggingface.co/bigscience/T0pp),T5,11,36.8,10.8,1.6,58.0,0.0,21.5
+[StableVicuna](https://huggingface.co/TheBloke/stable-vicuna-13B-HF),LLaMA,13,49.2,37.5,34.3,67.5,15.9,40.9
+[Vicuna](https://huggingface.co/eachadea/vicuna-13b-1.1),LLaMA,13,49.7,37.1,32.9,60.9,15.2,39.2
+[GPT4 Alpaca Lora](https://huggingface.co/TheBloke/gpt4-alpaca-lora-13B-HF),LLaMA,13,46.4,36.6,35.4,61.0,14.0,38.7
+[LLaMA](https://huggingface.co/decapoda-research/llama-13b-hf),LLaMA,13,46.2,37.1,35.3,58.8,13.4,38.2
+[Koala](https://huggingface.co/TheBloke/koala-13B-HF),LLaMA,13,44.6,34.6,28.3,52.6,11.0,34.2
+[Raven v11](https://huggingface.co/BlinkDL/rwkv-4-raven),RWKV,14,25.6,28.9,6.1,31.8,11.6,20.8
+[Dolly V2](https://huggingface.co/databricks/dolly-v2-12b),Pythia,12,25.6,29.7,16.6,35.8,8.5,23.2
+[StarCoder](https://huggingface.co/bigcode/starcoder),,16,29.7,35.9,19.7,30.7,32.9,27.5
+[StarChat](https://huggingface.co/HuggingFaceH4/starchat-alpha),StarCoder,16,29.8,34.3,19.9,,36.5,
+[T5 XXL LM](https://huggingface.co/google/t5-xxl-lm-adapt),T5,11,25.2,30.3,17.5,33.6,0.0,21.3
+[Moon Base](https://huggingface.co/fnlp/moss-moon-003-base),,,30.2,29.3,,,,
+[Moon SFT](https://huggingface.co/fnlp/moss-moon-003-sft),,,23.0,25.4,,,,
+[WizardLM-13B-Uncensored](http://ehartford/WizardLM-13B-Uncensored),LLaMA,13,43.2,35.6,28.8,58.8,15.9,36.5
+[Guanaco](https://huggingface.co/TheBloke/guanaco-13B-GGML),,13,47.4,37.4,33.9,65.0,12.2,39.2
+[pythia](https://huggingface.co/EleutherAI/pythia-12b),Pythia,12,26.9,29.5,17.1,36.9,9.1,23.9
+[GPT4 Alpaca Lora 7B](https://huggingface.co/chansung/gpt4-alpaca-lora-7b),LLaMA,7,35.6,30.7,27.5,45.6,15.9,31.1
+[Alpaca Lora 7B](https://huggingface.co/tloen/alpaca-lora-7b),LLaMA,7,35.9,32.9,27.5,42.0,7.3,29.1
+[Alpaca 7B](https://huggingface.co/chavinlo/alpaca-native),LLaMA,7,41.6,33.3,26.3,50.7,10.3,32.4
+[Mosaic-7B-Chat](https://huggingface.co/mosaicml/mpt-7b-chat),MosaicLM,7,37.1,32.0,20.2,47.5,17.7,30.9
+[LLaMA](https://huggingface.co/decapoda-research/llama-7b-hf),LLaMA,7,35.2,30.9,27.6,33.9,10.3,27.6
+[StableLM Tuned](https://huggingface.co/stabilityai/stablelm-base-alpha-7b),StableLM,7,24.4,28.9,12.7,32.1,5.5,20.7
+[Mosaic-7B](https://huggingface.co/mosaicml/mpt-7b),MosaicLM,7,30.8,32.1,21.8,39.4,14.0,27.6
+[Mosaic-7B-Instruct](https://huggingface.co/mosaicml/mpt-7b-instruct),MosaicLM,7,32.0,32.1,23.4,38.3,15.2,28.2
+[Raven-rwkv-7B](https://huggingface.co/spaces/BlinkDL/Raven-RWKV-7B),RWKV,7,23.6,27.0,12.0,28.5,8.5,19.9
+[RWKV-pile-7B](https://huggingface.co/BlinkDL/rwkv-4-pile-7b),,7,24.7,28.4,12.0,27.4,6.7,19.8
+[Flan-T5-XL](https://huggingface.co/google/flan-t5-xl),T5,3,49.2,40.2,56.3,91.2,0.0,47.4
+[CodeGen-6B-mono](https://huggingface.co/Salesforce/codegen-6B-mono),CodeGen,6,26.1,29.2,12.8,21.2,26.2,23.1
+[ChatGLM](https://huggingface.co/THUDM/chatglm-6b),GLM,6,36.1,31.3,44.2,51.1,3.1,33.2
+[RedPajama](https://huggingface.co/togethercomputer/RedPajama-INCITE-7B-Instruct),RedPajama,7,38.1,31.3,24.7,60.2,5.5,32.0
+[TK Instruct XL](http://huggingface.co/allenai/tk-instruct-3b-def-pos),T5,3,36.2,28.9,21.6,46.7,0.0,26.7
+[T5 XL LM](https://huggingface.co/google/t5-xl-lm-adapt),T5,3,23.3,24.3,12.6,31.0,0.0,18.2
+[Flan Alpaca XL](https://huggingface.co/declare-lab/flan-alpaca-xl),,3,46.6,27.0,44.2,88.0,0.0,41.2
+[Falcon-7b](https://huggingface.co/tiiuae/falcon-7b),,,27.1,31.2,24.0,35.8,0.6,23.7
+[Falcon-7b-Instruct](https://huggingface.co/tiiuae/falcon-7b-instruct),,,25.3,29.7,17.4,38.7,0.0,22.2
+[TK Instruct Large](https://huggingface.co/allenai/tk-instruct-large-def-pos),T5,0.7,24.8,27.8,17.1,32.9,0.0,20.5
+[Flan T5 Large](http://google/flan-t5-large),T5,0.7,42.0,37.1,39.9,86.1,0.0,41.0
+[T5 Large LM](https://huggingface.co/google/t5-base-lm-adapt),T5,0.7,25.6,27.0,5.6,29.2,0.0,17.5
+[Flan Alpaca Large](https://huggingface.co/declare-lab/flan-alpaca-large),,,39.8,27.6,28.4,83.6,0.0,35.9
+[TK Instruct Base](https://huggingface.co/allenai/tk-instruct-base-def-pos),T5,0.2,24.7,26.5,9.3,32.9,0.0,18.6
+[Flan T5 Base](https://huggingface.co/google/flan-t5-base),T5,0.2,34.1,30.8,32.1,61.0,0.0,31.6
+[T5 Base LM](https://huggingface.co/google/t5-base-lm-adapt),T5,0.2,25.4,26.4,2.1,32.9,0.0,17.3
+[Flan Alpaca Base](https://huggingface.co/declare-lab/flan-alpaca-base),T5,0.2,30.4,26.6,20.5,65.3,0.0,28.6
