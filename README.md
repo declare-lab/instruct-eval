@@ -1,5 +1,6 @@
 ## 🍮 📚 InstructEval: Towards Holistic Evaluation of Instruction-Tuned Large Language Models
 
+📣 The [**InstructEval**](https://declare-lab.net/instruct-eval/) benchmark has been released. 
 📣 The paper reporting Instruction Tuned LLMs on **InstructEval** benchmark suite has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
 
 📣 We are releasing **IMPACT**, a dataset for evaluating writing capability of LLMs in four aspects: Informative, Professional, Argumentative, Creative. Download it from Huggingface: [https://huggingface.co/datasets/declare-lab/InstructEvalImpact](https://huggingface.co/datasets/declare-lab/InstructEvalImpact). 
@@ -36,6 +37,8 @@ Notably, we support most models from HuggingFace Transformers 🤗 :
 - [ChatGLM](https://huggingface.co/THUDM/chatglm-6b)
 
 ### Results
+
+For detailed results, please go to our [leaderboard](https://declare-lab.net/instruct-eval/)
 
 | Model Name | Model Path                                                                                                              | Paper                                                                                                         | Size | MMLU | BBH  | DROP | HumanEval |
 |------------|-------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|------|------|------|------|-----------|
