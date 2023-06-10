@@ -24,7 +24,7 @@ benchmarks such as [MMLU](https://arxiv.org/abs/2009.03300) and [BBH](https://ar
 Compared to existing libraries such as [evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
 and [HELM](https://github.com/stanford-crfm/helm), this repo enables simple and convenient evaluation for multiple
 models.
-Notably, we support most models from HuggingFace Transformers 🤗 :
+Notably, we support most models from HuggingFace Transformers 🤗 (check [here](./docs/models.md) for a list of models we support):
 
 - [AutoModelForCausalLM](https://huggingface.co/docs/transformers/model_doc/auto#transformers.AutoModelForCausalLM) (
   eg [GPT-2](https://huggingface.co/gpt2-xl), [GPT-J](https://huggingface.co/EleutherAI/gpt-j-6b)
