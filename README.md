@@ -1,6 +1,6 @@
 ## 🍮 📚 InstructEval: Towards Holistic Evaluation of Instruction-Tuned Large Language Models
 
-📣 The [**InstructEval**](https://declare-lab.net/instruct-eval/) benchmark has been released. 
+📣 The [**InstructEval**](https://declare-lab.net/instruct-eval/) benchmark and leaderboard have been released. 
 
 📣 The paper reporting Instruction Tuned LLMs on **InstructEval** benchmark suite has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
 
