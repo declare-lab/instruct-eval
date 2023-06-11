@@ -50,7 +50,7 @@ Human,,,89.8,94.4,94.1,98.2,,
 [RedPajama](https://huggingface.co/togethercomputer/RedPajama-INCITE-7B-Instruct),RedPajama,7,38.1,31.3,24.7,60.2,5.5,32.0
 [TK Instruct XL](http://huggingface.co/allenai/tk-instruct-3b-def-pos),T5,3,36.2,28.9,21.6,46.7,0.0,26.7
 [T5 XL LM](https://huggingface.co/google/t5-xl-lm-adapt),T5,3,23.3,24.3,12.6,31.0,0.0,18.2
-[Flan Alpaca XL](https://huggingface.co/declare-lab/flan-alpaca-xl),,3,46.6,27.0,44.2,88.0,0.0,41.2
+[Flan Alpaca XL](https://huggingface.co/declare-lab/flan-alpaca-xl),T5,3,46.6,27.0,44.2,88.0,0.0,41.2
 [Falcon-7b](https://huggingface.co/tiiuae/falcon-7b),,,27.1,31.2,24.0,35.8,0.6,23.7
 [Falcon-7b-Instruct](https://huggingface.co/tiiuae/falcon-7b-instruct),,,25.3,29.7,17.4,38.7,0.0,22.2
 [TK Instruct Large](https://huggingface.co/allenai/tk-instruct-large-def-pos),T5,0.7,24.8,27.8,17.1,32.9,0.0,20.5
