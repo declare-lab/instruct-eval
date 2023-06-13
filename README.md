@@ -3,7 +3,7 @@
 [Paper](https://arxiv.org/abs/2306.04757) | [Model](https://huggingface.co/declare-lab/flan-alpaca-xxl) | [Leaderboard](https://declare-lab.net/instruct-eval/)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png" alt="">
+  <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png" alt="" width="300" height="200">
 </p>
 
 
