@@ -169,11 +169,11 @@
 
             Benchmark:
             <div class="switch-toggle switch-evaluator" style="margin-right: 4em">
-            <input id="solving" name="evaluator" type="radio" checked="checked" value="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/problem_solving_leaderboard.csv" onchange="updateTable(this.value)" />
+                <input id="solving" name="evaluator" type="radio" checked="checked" value="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/problem_solving_leaderboard.csv" onchange="updateTable(this.value)" />
                 <label for="solving" onclick="">Problem Solving</label>
-                <input id="writing" name="evaluator" type="radio" value="", onchange="updateTable(this.value)"/>
+                <input id="writing" name="evaluator" type="radio" value="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/writing_leaderboard.csv", onchange="updateTable(this.value)"/>
                 <label for="writing" onclick="">General Writing</label>
-                <input id="alignment" name="evaluator" type="radio" value="", onchange="updateTable(this.value)" />
+                <input id="alignment" name="evaluator" type="radio" value="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/alignment_leaderboard.csv", onchange="updateTable(this.value)" />
                 <label for="alignment" onclick="">Alignment</label>
             </div>
         </div>
