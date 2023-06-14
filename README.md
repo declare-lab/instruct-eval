@@ -1,4 +1,4 @@
-## 🍮 📚 InstructEval: Towards Holistic Evaluation of Instruction-Tuned Large Language Models
+## :camel: 🍮 📚 InstructEval: Towards Holistic Evaluation of Instruction-Tuned Large Language Models
 
 [Paper](https://arxiv.org/abs/2306.04757) | [Model](https://huggingface.co/declare-lab/flan-alpaca-xxl) | [Leaderboard](https://declare-lab.net/instruct-eval/)
 
