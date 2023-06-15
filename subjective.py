@@ -139,6 +139,14 @@ def score_answers(mode: str, folder: str, **kwargs):
     data.save(str(path_out))
 
 
+def analyze_scores(pattern: str):
+    for path in sorted(Path().glob(pattern)):
+        data = SubjectiveData.load(str(path))
+        df = pd.DataFrame([s.dict() for s in data.samples])
+        print(path)
+        print(df.groupby("Category")["Score"].mean())
+
+
 """
 python subjective.py write_answers outputs/subjective --model_name openai --use_azure
 
@@ -147,6 +155,10 @@ python subjective.py write_answers outputs/subjective --model_name llama --model
 python subjective.py write_answers outputs/subjective --model_name seq_to_seq --model_path google/flan-t5-xxl --load_8bit
 
 python subjective.py write_answers outputs/subjective --model_name seq_to_seq --model_path declare-lab/flan-alpaca-xxl --load_8bit
+
+python subjective.py write_answers outputs/subjective --model_name causal --model_path databricks/dolly-v2-12b --load_8bit
+
+python subjective.py write_answers outputs/subjective --model_name chatglm --model_path THUDM/chatglm-6b
 
 ################################################################################
 
@@ -162,6 +174,9 @@ python subjective.py score_answers relevance outputs/subjective/flan-alpaca-xxl 
 python subjective.py score_answers relevance outputs/subjective/stable-vicuna-13B-HF --model_name openai --use_azure
 {'score': 3.44, 'std': 0.8284926070883192}
 
+python subjective.py score_answers relevance outputs/subjective/dolly-v2-12b --model_name openai --use_azure
+
+p subjective.py analyze_scores "outputs/subjective/*/relevance.jsonl"
 ################################################################################
 
 python subjective.py score_answers coherence outputs/subjective/VisualQuestionAnswering --model_name openai --use_azure
@@ -176,6 +191,9 @@ python subjective.py score_answers coherence outputs/subjective/flan-alpaca-xxl 
 python subjective.py score_answers coherence outputs/subjective/stable-vicuna-13B-HF --model_name openai --use_azure
 {'score': 3.205, 'std': 1.0968021699467958}
 
+python subjective.py score_answers coherence outputs/subjective/dolly-v2-12b --model_name openai --use_azure
+
+p subjective.py analyze_scores "outputs/subjective/*/coherence.jsonl"
 """
 
 
