@@ -19,7 +19,6 @@ from . import swag
 from . import openbookqa
 from . import squad
 from . import naturalqs
-from . import sat
 from . import arithmetic
 from . import lambada
 from . import piqa
@@ -35,8 +34,6 @@ from . import headqa
 from . import mathqa
 from . import hendrycks_ethics
 from . import drop
-from . import unscramble
-from . import logiqa
 from . import hendrycks_test
 from . import hendrycks_math
 from . import cbt
@@ -44,10 +41,8 @@ from . import lambada_cloze
 from . import pile
 from . import wikitext
 from . import lambada_multilingual
-from . import mutual
 from . import truthfulqa
 from . import blimp
-from . import asdiv
 from . import gsm8k
 from . import storycloze
 
@@ -127,7 +122,6 @@ TASK_REGISTRY = {
     "arc_easy": arc.ARCEasy,
     "arc_challenge": arc.ARCChallenge,
     # "quac": quac.QuAC, # not implemented yet
-    "logiqa": logiqa.LogiQA,
     "hellaswag": hellaswag.HellaSwag,
     "swag": swag.SWAG,
     "openbookqa": openbookqa.OpenBookQA,
@@ -153,8 +147,6 @@ TASK_REGISTRY = {
     "truthfulqa_mc": truthfulqa.TruthfulQAMultipleChoice,
     "truthfulqa_gen": truthfulqa.TruthfulQAGeneration,
     # dialogue
-    "mutual": mutual.MuTual,
-    "mutual_plus": mutual.MuTualPlus,
     # math
     "math_algebra": hendrycks_math.MathAlgebra,
     "math_counting_and_prob": hendrycks_math.MathCountingAndProbability,
@@ -163,7 +155,6 @@ TASK_REGISTRY = {
     "math_num_theory": hendrycks_math.MathNumberTheory,
     "math_prealgebra": hendrycks_math.MathPrealgebra,
     "math_precalc": hendrycks_math.MathPrecalculus,
-    "math_asdiv": asdiv.Asdiv,
     "gsm8k": gsm8k.GradeSchoolMath8K,
     # arithmetic
     "arithmetic_2da": arithmetic.Arithmetic2DPlus,
@@ -185,11 +176,6 @@ TASK_REGISTRY = {
     # chef's selection, mostly wmt20
     **translation.create_tasks_from_benchmarks(selected_translation_benchmarks),
     # Word Scrambling and Manipulation Tasks
-    "anagrams1": unscramble.Anagrams1,
-    "anagrams2": unscramble.Anagrams2,
-    "cycle_letters": unscramble.CycleLetters,
-    "random_insertion": unscramble.RandomInsertion,
-    "reversed_words": unscramble.ReversedWords,
     # Pile
     "pile_arxiv": pile.PileArxiv,
     "pile_books3": pile.PileBooks3,

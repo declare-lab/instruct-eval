@@ -5,6 +5,7 @@ import crass
 import drop
 import mmlu
 from human_eval.main import main as humaneval
+from lm_eval import evaluator
 
 
 def main(task_name: str, **kwargs):
@@ -22,12 +23,26 @@ def main(task_name: str, **kwargs):
             score = task_fn(**kwargs)
             results[name] = score
             print({name: round(score * 100, 2) for name, score in results.items()})
-    else:
+    elif task_name in task_map.keys():
         task_fn = task_map.get(task_name)
         if task_fn is None:
             raise ValueError(f"{task_name}. Choose from {list(task_map.keys())}")
         score = task_fn(**kwargs)
         results = {task_name: score}
+    else:
+        print("Using lm-eval")
+        model_name = kwargs.pop("model_name")
+        results = evaluator.simple_evaluate(
+            model="hf" if model_name in ["causal", "seq_to_seq"] else "llama",
+            model_args=f"pretrained={kwargs.pop('model_path')}",
+            tasks=[task_name],
+            num_fewshot=kwargs.get("ntrain", 0),
+            batch_size=1,
+            no_cache=True,
+            device="0",
+        )
+        print(evaluator.make_table(results))
+        return
 
     results = {name: round(score * 100, 2) for name, score in results.items()}
     print(results)
@@ -69,6 +84,12 @@ python main.py all --model_name rwkv --model_path https://huggingface.co/BlinkDL
 
 python main.py all --model_name llama --model_path TheBloke/stable-vicuna-13B-HF --load_8bit
 {'mmlu': 49.16, 'bbh': 37.51, 'drop': 34.26, 'humaneval': 15.85}
+
+python main.py truthfulqa_mc --model_name llama --model_path TheBloke/vicuna-13B-1.1-HF --load_8bit
+mc2 0.5002
+
+python main.py truthfulqa_mc --model_name causal --model_path gpt2
+mc2 0.4068
 
 """
 

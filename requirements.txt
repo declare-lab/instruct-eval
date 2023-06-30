@@ -17,4 +17,3 @@ einops==0.6.1
 rwkv==0.7.3  # ChatRWKV Model
 torchvision==0.15.1  # Download utils
 safetensors==0.3.1
-lm-eval==0.3.0
