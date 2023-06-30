@@ -33,7 +33,7 @@ def filter_code(completion: str, model: EvalModel) -> str:
         return completion.split('"""\n')[-1].replace("`", "")
     else:
         ## The program tends to overwrite, we only take the first function
-        completion = completion.lstrip('\n')
+        completion = completion.lstrip("\n")
         return completion.split("\n\n")[0]
 
 
@@ -45,7 +45,7 @@ def gen_prompt(prompt: str, model: EvalModel) -> str:
             "Please complete the following Python code without providing any additional tasks such as testing or explanations\n"
             + prompt
         )
-    if 'starchat' in model.model_path:
+    if "starchat" in model.model_path:
         prompt = f"<|system|>\n<|end|>\n<|user|>{prompt}<|end|>\n<|assistant|>"
     return prompt
 

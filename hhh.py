@@ -27,7 +27,7 @@ class HHHDataset(BaseModel):
     def load_from_dict(cls, d):
         query = d["input"]
         assert len(d["target_scores"]) == 2
-        for option, scores in d['target_scores'].items():
+        for option, scores in d["target_scores"].items():
             if scores == 1:
                 chosen = option
             elif scores == 0:
@@ -64,19 +64,22 @@ class HHHDataset(BaseModel):
             )
         return base_prompt, prompt
 
+
 def load_data(data_path: str) -> List[HHHDataset]:
     if not Path(data_path).exists():
         download_link = "https://raw.githubusercontent.com/google/BIG-bench/main/bigbench/benchmark_tasks/hhh_alignment/{portion}/task.json"
-        if 'harmless' in data_path:
+        if "harmless" in data_path:
             portion = "harmless"
-        elif 'honest' in data_path:
+        elif "honest" in data_path:
             portion = "honest"
-        elif 'helpful' in data_path:
+        elif "helpful" in data_path:
             portion = "helpful"
-        elif 'other' in data_path:
+        elif "other" in data_path:
             portion = "other"
         else:
-            raise ValueError("data_path should be one of [harmless, honest, helpful, other]/task.json")
+            raise ValueError(
+                "data_path should be one of [harmless, honest, helpful, other]/task.json"
+            )
 
         link = download_link.format(portion=portion)
         response = requests.get(link)
@@ -95,7 +98,9 @@ def load_data(data_path: str) -> List[HHHDataset]:
     return examples
 
 
-def evaluate(model: EvalModel, data: List[HHHDataset], print_result: bool = False, **kwargs):
+def evaluate(
+    model: EvalModel, data: List[HHHDataset], print_result: bool = False, **kwargs
+):
 
     count = 0
     total = 0
@@ -112,11 +117,11 @@ def evaluate(model: EvalModel, data: List[HHHDataset], print_result: bool = Fals
         if not openai:
             A_base, B_base = model.get_choice(base_prompt)
             A, B = model.get_choice(prompt)
-            if (A-A_base) > (B-B_base):
-                pred = 'A'
+            if (A - A_base) > (B - B_base):
+                pred = "A"
                 num_A += 1
             else:
-                pred = 'B'
+                pred = "B"
                 num_B += 1
 
         else:
@@ -138,13 +143,14 @@ def evaluate(model: EvalModel, data: List[HHHDataset], print_result: bool = Fals
             answers.append((i, False))
         total += 1
         if i % 100 == 1 and print_result:
-            print(prompt, pred, 'Label:', o.label)
+            print(prompt, pred, "Label:", o.label)
             if not openai:
-                print('A-A_base:', (A-A_base), 'B-B_base:', (B-B_base))
+                print("A-A_base:", (A - A_base), "B-B_base:", (B - B_base))
 
         pbar.set_description(
             f"Correct: {count}/{total}, Accuracy: {count/total:.4f}, \
-            A: {num_A}, B: {num_B}, other: {num_other}")
+            A: {num_A}, B: {num_B}, other: {num_other}"
+        )
         pbar.update(1)
 
     return round(count / total, 4), answers
@@ -159,13 +165,14 @@ def main(**kwargs):
     for _ in range(kwargs.get("nruns", 1)):
         result = dict()
 
-        for o in ['harmless', 'honest', 'helpful', 'other']:
-            data_path = f'./data/{o}/task.json'
+        for o in ["harmless", "honest", "helpful", "other"]:
+            data_path = f"./data/{o}/task.json"
             data = load_data(data_path)
             score, answers = evaluate(model, data, **kwargs)
             result[o] = score
         results.append(result)
     return results
+
 
 """
 p hhh.py main --model_name openai --model_path VisualQuestionAnswering --use_azure
