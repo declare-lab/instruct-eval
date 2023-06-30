@@ -13,7 +13,7 @@ from lm_eval.utils import positional_deprecated
 def simple_evaluate(
     model,
     model_args=None,
-    tasks=[],
+    tasks=(),
     num_fewshot=0,
     batch_size=None,
     device=None,
@@ -69,14 +69,7 @@ def simple_evaluate(
         lm = model
 
     if not no_cache:
-        lm = lm_eval.base.CachingLM(
-            lm,
-            "lm_cache/"
-            + model
-            + "_"
-            + model_args.replace("=", "-").replace(",", "_").replace("/", "-")
-            + ".db",
-        )
+        raise NotImplementedError
 
     task_dict = lm_eval.tasks.get_task_dict(tasks)
 

@@ -1,18 +1,15 @@
 import abc
 from typing import Iterable
 import numpy as np
-import random
 import re
-import os
 import json
 import hashlib
 import datasets
-from sqlitedict import SqliteDict
 from tqdm import tqdm
 import torch
 import torch.nn.functional as F
 
-from lm_eval.metrics import mean, weighted_perplexity, weighted_mean, bits_per_byte
+from lm_eval.metrics import mean, weighted_perplexity, bits_per_byte
 from lm_eval import utils
 from abc import abstractmethod
 
@@ -778,66 +775,6 @@ class CacheHook:
             return
         hsh = hash_args(attr, req)
         self.dbdict[hsh] = res
-
-
-class CachingLM:
-    def __init__(self, lm, cache_db):
-        """LM wrapper that returns cached results if they exist, and uses the underlying LM if not.
-
-        :param lm: LM
-            Underlying LM
-        :param cache_db: str
-            Path to cache db
-        """
-        self.lm = lm
-        self.cache_db = cache_db
-        if os.path.dirname(cache_db):
-            os.makedirs(os.path.dirname(cache_db), exist_ok=True)
-        self.dbdict = SqliteDict(cache_db, autocommit=True)
-
-        # add hook to lm
-        lm.set_cache_hook(self.get_cache_hook())
-
-    def __getattr__(self, attr):
-        def fn(requests):
-            res = []
-            remaining_reqs = []
-
-            # figure out which ones are cached and which ones are new
-            for req in requests:
-                hsh = hash_args(attr, req)
-                if hsh in self.dbdict:
-                    ob = self.dbdict[hsh]
-
-                    assert ob is not None
-
-                    res.append(ob)
-                else:
-                    res.append(None)
-                    remaining_reqs.append(req)
-
-            # actually run the LM on the requests that do not have cached results
-            rem_res = getattr(self.lm, attr)(remaining_reqs)
-
-            # stick the new ones back into the list and also cache any of the new ones
-            resptr = 0
-            for req, r in zip(remaining_reqs, rem_res):
-                while res[resptr] is not None:
-                    resptr += 1
-
-                res[resptr] = r
-
-                # caching
-                hsh = hash_args(attr, req)
-                self.dbdict[hsh] = r
-            self.dbdict.commit()
-
-            return res
-
-        return fn
-
-    def get_cache_hook(self):
-        return CacheHook(self)
 
 
 REQUEST_RETURN_LENGTHS = {
