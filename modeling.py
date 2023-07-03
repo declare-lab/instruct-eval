@@ -1,10 +1,10 @@
-import getpass
+import json
+import signal
 import time
 from pathlib import Path
 from typing import Optional, Tuple
 
 import openai
-import signal
 import rwkv
 import tiktoken
 import torch
@@ -47,50 +47,53 @@ class EvalModel(BaseModel, arbitrary_types_allowed=True):
 
 
 class OpenAIModel(EvalModel):
-    model_path: Optional[str]
-    api_key: Optional[str]
+    model_path: str
+    engine: str = ""
     use_azure: bool = False
     tokenizer: Optional[tiktoken.Encoding]
     api_endpoint: str = "https://research.openai.azure.com/"
     api_version: str = "2023-03-15-preview"
     timeout: int = 60
+    temperature: float = 0.0
 
     def load(self):
         if self.tokenizer is None:
-            try:
-                self.tokenizer = tiktoken.encoding_for_model(self.model_path)
-            except Exception as e:
-                print(e)
-                self.tokenizer = tiktoken.get_encoding("cl100k_base")  # chatgpt/gpt-4
+            self.tokenizer = tiktoken.get_encoding("cl100k_base")  # chatgpt/gpt-4
+
+        with open(self.model_path) as f:
+            info = json.load(f)
+            openai.api_key = info["key"]
+            self.engine = info["engine"]
 
         if self.use_azure:
-            if self.model_path is None:
-                self.model_path = "VisualQuestionAnswering"
             openai.api_type = "azure"
             openai.api_base = self.api_endpoint
             openai.api_version = self.api_version
 
-        if self.api_key is None:
-            self.api_key = getpass.getpass("API Key: ")
-        openai.api_key = self.api_key
-
     def run(self, prompt: str, **kwargs) -> str:
         self.load()
         output = ""
+        error_message = "The response was filtered"
 
         while not output:
             try:
+                key = "engine" if self.use_azure else "model"
+                kwargs = {key: self.engine}
                 response = openai.ChatCompletion.create(
-                    engine=self.model_path,
                     messages=[{"role": "user", "content": prompt}],
                     timeout=self.timeout,
                     request_timeout=self.timeout,
+                    temperature=0,  # this is the degree of randomness of the model's output
+                    **kwargs,
                 )
+                if response.choices[0].finish_reason == "content_filter":
+                    raise ValueError(error_message)
                 output = response.choices[0].message.content
             except Exception as e:
                 print(e)
-                if "The response was filtered due to the prompt triggering" in str(e):
-                    output = "Response filtered."
+                if error_message in str(e):
+                    output = error_message
+
             if not output:
                 print("OpenAIModel request failed, retrying.")
 
@@ -162,7 +165,7 @@ class SeqToSeqModel(EvalModel):
         self.load()
         return len(self.tokenizer(text).input_ids)
 
-    def get_choice(self, text: str, **kwargs) -> Tuple[int]:
+    def get_choice(self, text: str, **kwargs) -> Tuple[float, float]:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         start_token = torch.tensor(
@@ -214,7 +217,7 @@ class CausalModel(SeqToSeqModel):
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
 
-    def get_choice(self, text: str, **kwargs) -> Tuple[int]:
+    def get_choice(self, text: str, **kwargs) -> Tuple[float, float]:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         with torch.no_grad():
@@ -281,7 +284,7 @@ class LlamaModel(SeqToSeqModel):
         batch_size, length = inputs.input_ids.shape
         return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
 
-    def get_choice(self, text: str, **kwargs) -> Tuple[int]:
+    def get_choice(self, text: str, **kwargs) -> Tuple[float, float]:
         self.load()
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         with torch.no_grad():
@@ -523,7 +526,7 @@ p modeling.py test_model --model_name llama --model_path eachadea/vicuna-13b --l
 p modeling.py test_model --model_name causal --model_path togethercomputer/GPT-NeoXT-Chat-Base-20B --load_8bit
 p modeling.py test_model --model_name llama --model_path huggyllama/llama-7b --lora_path tloen/alpaca-lora-7b
 p modeling.py test_model --model_name seq_to_seq --model_path google/flan-t5-xl --lora_path declare-lab/flan-alpaca-xl-lora
-p modeling.py test_model --model_name openai --model_path VisualQuestionAnswering --use_azure
+p modeling.py test_model --model_name openai --model_path openai_info.json
 p modeling.py test_model --model_name rwkv --model_path https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v11-Eng99%25-Other1%25-20230427-ctx8192.pth
 p modeling.py test_model --model_name causal --model_path mosaicml/mpt-7b-instruct
 p modeling.py test_model --model_name gptq --model_path TheBloke/alpaca-lora-65B-GPTQ-4bit --quantized_path alpaca-lora-65B-GPTQ-4bit-128g.safetensors
