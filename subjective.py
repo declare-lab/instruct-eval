@@ -160,6 +160,8 @@ python subjective.py write_answers outputs/subjective --model_name causal --mode
 
 python subjective.py write_answers outputs/subjective --model_name chatglm --model_path THUDM/chatglm-6b
 
+python subjective.py write_answers outputs/subjective --model_name llama --model_path TheBloke/vicuna-13B-1.1-HF --load_8bit
+
 ################################################################################
 
 python subjective.py score_answers relevance outputs/subjective/VisualQuestionAnswering --model_name openai --use_azure
@@ -175,6 +177,9 @@ python subjective.py score_answers relevance outputs/subjective/stable-vicuna-13
 {'score': 3.44, 'std': 0.8284926070883192}
 
 python subjective.py score_answers relevance outputs/subjective/dolly-v2-12b --model_name openai --use_azure
+
+python subjective.py score_answers relevance outputs/subjective/vicuna-13B-1.1-HF --model_name openai --model_path openai_info.json
+{'score': 3.745, 'std': 0.7680983010005946}                                                                                    
 
 p subjective.py analyze_scores "outputs/subjective/*/relevance.jsonl"
 ################################################################################
@@ -192,6 +197,9 @@ python subjective.py score_answers coherence outputs/subjective/stable-vicuna-13
 {'score': 3.205, 'std': 1.0968021699467958}
 
 python subjective.py score_answers coherence outputs/subjective/dolly-v2-12b --model_name openai --use_azure
+
+python subjective.py score_answers coherence outputs/subjective/vicuna-13B-1.1-HF --model_name openai --model_path openai_info.json
+{'score': 3.815, 'std': 0.44807923406469086}                                                                                   
 
 p subjective.py analyze_scores "outputs/subjective/*/coherence.jsonl"
 """
