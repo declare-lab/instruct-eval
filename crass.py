@@ -163,12 +163,13 @@ def evaluate(model: EvalModel, data_train: CrassData, data_test: CrassData) -> d
     return dict(score=score)
 
 
-def main(**kwargs):
+def main(ntrain: int = 3, **kwargs):
     model = select_model(max_input_length=2048, max_output_length=8, **kwargs)
     print(locals())
 
     all_results = []
     data_train = CrassData.load_train_set()
+    data_train.samples = data_train.samples[:ntrain]
     data_test = CrassData.load_test_set()
     data_test.analyze()
     result = evaluate(model, data_train, data_test)
