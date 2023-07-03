@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List
 
 import pandas as pd
+from datasets import load_dataset
 from fire import Fire
 from pydantic import BaseModel
 from tqdm import tqdm
@@ -43,6 +44,13 @@ class SubjectiveData(BaseModel):
         print(dict(path=path, samples=len(samples)))
         return cls(samples=samples)
 
+    @classmethod
+    def load_from_huggingface(cls, path: str):
+        samples = []
+        for raw in load_dataset(path, split="train"):
+            samples.append(SubjectiveSample(**raw))
+        return cls(samples=samples)
+
     def save(self, path: str):
         Path(path).parent.mkdir(exist_ok=True, parents=True)
         with open(path, "w") as f:
@@ -66,8 +74,10 @@ def test_data(path: str = "data/SubjectiveData.csv"):
     data.analyze()
 
 
-def write_answers(folder: str, data_path: str = "data/SubjectiveData.csv", **kwargs):
-    data = SubjectiveData.load(data_path)
+def write_answers(
+    folder: str, data_path: str = "declare-lab/InstructEvalImpact", **kwargs
+):
+    data = SubjectiveData.load_from_huggingface(data_path)
     model = select_model(max_input_length=512, max_output_length=1024, **kwargs)
     if isinstance(model, SeqToSeqModel):
         model.do_sample = True
