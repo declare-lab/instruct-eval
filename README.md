@@ -115,8 +115,8 @@ python main.py humaneval  --model_name llama --model_path eachadea/vicuna-13b --
 Install dependencies and download data.
 
 ```
-conda create -n flan-eval python=3.8 -y
-conda activate flan-eval
+conda create -n instruct-eval python=3.8 -y
+conda activate instruct-eval
 pip install -r requirements.txt
 mkdir -p data
 wget https://people.eecs.berkeley.edu/~hendrycks/data.tar -O data/mmlu.tar
