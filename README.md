@@ -6,6 +6,7 @@
   <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png" alt="" width="300" height="300">
 </p>
 
+📣 We developed Flacuna by fine-tuning Vicuna-13B on the Flan collection. Flacuna is better than Vicuna at problem-solving. Access the model here [https://huggingface.co/declare-lab/flacuna-13b-v1.0](https://huggingface.co/declare-lab/flacuna-13b-v1.0).
 
 📣 The [**InstructEval**](https://declare-lab.net/instruct-eval/) benchmark and leaderboard have been released. 
 
