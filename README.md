@@ -1,6 +1,6 @@
 ## :camel: 🍮 📚 InstructEval: Towards Holistic Evaluation of Instruction-Tuned Large Language Models
 
-[Paper](https://arxiv.org/abs/2306.04757) | [Model](https://huggingface.co/declare-lab/flan-alpaca-xxl) | [Leaderboard](https://declare-lab.net/instruct-eval/)
+[Paper](https://arxiv.org/abs/2306.04757) | [Model](https://huggingface.co/declare-lab/flacuna-13b-v1.0) | [Dataset](https://huggingface.co/declare-lab/flan-mini)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png" alt="" width="300" height="300">
