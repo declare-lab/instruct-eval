@@ -215,7 +215,7 @@ class CausalModel(SeqToSeqModel):
             **kwargs,
         )
         batch_size, length = inputs.input_ids.shape
-        return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
+        return self.tokenizer.decode(outputs[0], skip_special_tokens=True).split(prompt, maxsplit=1)[-1]
 
     def get_choice(self, text: str, **kwargs) -> Tuple[float, float]:
         self.load()
@@ -282,7 +282,7 @@ class LlamaModel(SeqToSeqModel):
             **kwargs,
         )
         batch_size, length = inputs.input_ids.shape
-        return self.tokenizer.decode(outputs[0, length:], skip_special_tokens=True)
+        return self.tokenizer.decode(outputs[0], skip_special_tokens=True).split(text, maxsplit=1)[-1]
 
     def get_choice(self, text: str, **kwargs) -> Tuple[float, float]:
         self.load()
