@@ -6,6 +6,8 @@
   <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png" alt="" width="300" height="300">
 </p>
 
+📣 **RedEval**, the benchmark for **Safety** Evaluation of LLMs has been added: [RedEval](https://github.com/declare-lab/instruct-eval/red-eval)
+
 📣 Introducing **Red-Eval** to evaluate the safety of the LLMs using several jailbreaking prompts. With **Red-Eval** one could jailbreak/red-team GPT-4 with a 65.1% attack success rate and ChatGPT could be jailbroken 73% of the time as measured on DangerousQA and HarmfulQA benchmarks. More details are here: [Code](https://github.com/declare-lab/red-instruct) and [Paper](https://arxiv.org/abs/2308.09662).
 
 📣 We developed Flacuna by fine-tuning Vicuna-13B on the Flan collection. Flacuna is better than Vicuna at problem-solving. Access the model here [https://huggingface.co/declare-lab/flacuna-13b-v1.0](https://huggingface.co/declare-lab/flacuna-13b-v1.0).
