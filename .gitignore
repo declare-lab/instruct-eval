@@ -1,2 +1,6 @@
 /.idea/
 *.jsonl
+*.csv
+
+__pycache__/
+data/
