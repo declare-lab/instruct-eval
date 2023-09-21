@@ -141,12 +141,14 @@ class SeqToSeqModel(EvalModel):
             args = {}
             if self.load_8bit:
                 args.update(device_map="auto", load_in_8bit=True)
+            else:
+                args.update(device_map="auto", torch_dtype=torch.float16)
             self.model = AutoModelForSeq2SeqLM.from_pretrained(self.model_path, **args)
             if self.lora_path:
                 self.model = PeftModel.from_pretrained(self.model, self.lora_path)
             self.model.eval()
-            if not self.load_8bit:
-                self.model.to(self.device)
+            # if not self.load_8bit:
+            #     self.model.to(self.device)
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
 
@@ -190,12 +192,14 @@ class CausalModel(SeqToSeqModel):
             args = {}
             if self.load_8bit:
                 args.update(device_map="auto", load_in_8bit=True)
+            else:
+                args.update(device_map="auto", torch_dtype=torch.float16)
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_path, trust_remote_code=True, **args
             )
             self.model.eval()
-            if not self.load_8bit:
-                self.model.to(self.device)
+            # if not self.load_8bit:
+            #     self.model.to(self.device)
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(
                 self.model_path, trust_remote_code=True
@@ -247,12 +251,14 @@ class LlamaModel(SeqToSeqModel):
             args = {}
             if self.load_8bit:
                 args.update(device_map="auto", load_in_8bit=True)
+            else:
+                args.update(device_map="auto", torch_dtype=torch.float16)
             self.model = LlamaForCausalLM.from_pretrained(self.model_path, **args)
             if self.lora_path:
                 self.model = PeftModel.from_pretrained(self.model, self.lora_path)
             self.model.eval()
-            if not self.load_8bit:
-                self.model.to(self.device)
+            # if not self.load_8bit:
+            #     self.model.to(self.device)
 
     def run(self, prompt: str, **kwargs) -> str:
         if self.use_template:
