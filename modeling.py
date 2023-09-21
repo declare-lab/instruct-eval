@@ -155,10 +155,12 @@ class SeqToSeqModel(EvalModel):
     def run(self, prompt: str, **kwargs) -> str:
         self.load()
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        do_sample = kwargs.pop("do_sample", self.do_sample)
+        max_output_length = kwargs.pop("max_output_length", self.max_output_length)
         outputs = self.model.generate(
             **inputs,
-            max_length=self.max_output_length,
-            do_sample=self.do_sample,
+            max_length=max_output_length,
+            do_sample=do_sample,
             **kwargs,
         )
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
