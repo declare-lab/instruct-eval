@@ -27,8 +27,10 @@ from transformers import (
     AutoModel,
     LlamaConfig,
 )
+from vllm import LLM, SamplingParams
 
 import quant
+from fastchat.model import get_conversation_template
 
 
 class EvalModel(BaseModel, arbitrary_types_allowed=True):
@@ -125,6 +127,68 @@ class OpenAIModel(EvalModel):
                 else:
                     time.sleep(3)
         return "Z"
+    
+
+class vllmModel(EvalModel):
+    model_path: str
+    # template_name: str
+    trust_remote_code: bool = True
+    model: Optional[LLM]
+    tokenizer: Optional[PreTrainedTokenizer]
+    load_8bit: bool = False
+    temperature: float = 0.0
+    tensor_parallel_size: int = 1
+
+    def load(self):
+        if self.model is None:
+            args = {}
+            if self.load_8bit:
+                args.update(device_map="auto", load_in_8bit=True)
+            else:
+                args.update(device_map="auto", torch_dtype=torch.float16)
+            self.model = LLM(
+                model=self.model_path,
+                trust_remote_code=self.trust_remote_code,
+                tensor_parallel_size=self.tensor_parallel_size
+            )
+        if self.tokenizer is None:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_path,
+                trust_remote_code=self.trust_remote_code
+            )
+
+    def count_text_length(self, text: str) -> int:
+        self.load()
+        return len(self.tokenizer(text).input_ids)
+
+    def run(self, prompts: str, **kwargs) -> str:
+        self.load()
+        # new_prompts = []
+        # for prompt in prompts:
+        #     conv_template = get_conversation_template(self.template_name)
+        #     conv_template.set_system_message(
+        #         "You are an AI assistant. Please provide helpful, detailed, and polite answers to the user's questions."
+        #     )
+        #     conv_template.append_message(conv_template.roles[0], prompt)
+        #     conv_template.append_message(conv_template.roles[1], None)
+        #     new_prompts.append(conv_template.get_prompt())
+
+        do_sample = kwargs.pop("do_sample", True)
+        max_output_length = kwargs.pop("max_output_length", self.max_output_length)
+        temperature = 0 if not do_sample else kwargs.pop("temperature", self.temperature)
+
+        sampling_params = SamplingParams(
+            temperature=temperature,
+            max_tokens=max_output_length,
+            **kwargs
+        )
+        outputs = self.model.generate(
+            prompts, sampling_params
+        )
+        return [output.outputs[0].text for output in outputs]
+    
+    def get_choice(self, text: str, **kwargs) -> Tuple[float, float]:
+        raise NotImplementedError
 
 
 class SeqToSeqModel(EvalModel):
@@ -506,6 +570,7 @@ def select_model(model_name: str, **kwargs) -> EvalModel:
         openai=OpenAIModel,
         rwkv=RWKVModel,
         gptq=GPTQModel,
+        vllm=vllmModel
     )
     model_class = model_map.get(model_name)
     if model_class is None:

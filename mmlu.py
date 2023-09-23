@@ -137,6 +137,8 @@ def evaluate(args, subject, model: EvalModel, dev_df, test_df):
     cors = []
     all_probs = []
 
+    labels = []
+    prompts = []
     for i in range(test_df.shape[0]):
         # get prompt and make sure it fits
         k = args.ntrain
@@ -150,11 +152,13 @@ def evaluate(args, subject, model: EvalModel, dev_df, test_df):
             prompt = train_prompt + prompt_end
 
         label = test_df.iloc[i, test_df.shape[1] - 1]
-        pred = model.run(prompt)
-        probs = [0 for _ in get_choices()]
-        cor = pred.strip().startswith(label)
-        cors.append(cor)
-        all_probs.append(probs)
+        prompts.append(prompt)
+        labels.append(label)
+
+    preds = model.run(prompts)
+    probs = [0 for _ in get_choices()]
+    cors = [pred.strip().startswith(label) for pred, label in zip(preds, labels)]
+    all_probs.extend([probs for _ in preds])
 
     acc = np.mean(cors)
     cors = np.array(cors)

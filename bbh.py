@@ -51,6 +51,7 @@ def evaluate(model: EvalModel, data: BBHData, ntrain: int) -> dict:
     data_test = BBHData(samples=data.samples[ntrain:])
     is_correct = []
 
+    prompts = []
     for i in range(len(data_test.samples)):
         # get prompt and make sure it fits
         k = int(ntrain)
@@ -63,11 +64,12 @@ def evaluate(model: EvalModel, data: BBHData, ntrain: int) -> dict:
             train_prompt = gen_prompt(data_train, k)
             prompt = train_prompt + prompt_end
 
-        label = data_test.samples[i].target
-        pred = model.run(prompt)
-        is_correct.append(pred.strip().startswith(label))
-        if i == 0:
-            print(dict(prompt=prompt, label=label, pred=pred))
+        prompts.append(prompt)
+
+    preds = model.run(prompts)
+    is_correct.extend([pred.strip().startswith(label) for pred, label in zip(preds, data_test.target)])
+    if i == 0:
+        print(dict(prompt=prompt, label=label, pred=pred))
 
     return dict(score=sum(is_correct) / len(is_correct))
 
