@@ -1,5 +1,8 @@
 from fire import Fire
 
+from pathlib import Path
+import json
+
 import bbh
 import crass
 import drop
@@ -9,6 +12,11 @@ from lm_eval import evaluator
 
 
 def main(task_name: str, **kwargs):
+    rslt_path = kwargs.pop('rslt_path', None)
+    if rslt_path is not None and Path(rslt_path).exists():
+        print(f"Already have file in {rslt_path}. Exist.")
+        exit(0)
+
     task_map = dict(
         mmlu=mmlu.main,
         bbh=bbh.main,
@@ -46,6 +54,12 @@ def main(task_name: str, **kwargs):
 
     results = {name: round(score * 100, 2) for name, score in results.items()}
     print(results)
+
+    if rslt_path is not None:
+        Path(rslt_path).parent.mkdir(exist_ok=True, parents=True)
+        with open(rslt_path, 'w') as f:
+            json.dump(results, f)
+
     return results
 
 
