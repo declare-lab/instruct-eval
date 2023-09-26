@@ -45,6 +45,9 @@ class EvalModel(BaseModel, arbitrary_types_allowed=True):
     def check_valid_length(self, text: str) -> bool:
         return self.count_text_length(text) <= self.max_input_length
 
+    def load(self):
+        raise NotImplementedError
+
 
 class OpenAIModel(EvalModel):
     model_path: str
@@ -134,7 +137,6 @@ class SeqToSeqModel(EvalModel):
     lora_path: str = ""
     device: str = "cuda"
     load_8bit: bool = False
-    do_sample: bool = False
 
     def load(self):
         if self.model is None:
@@ -156,7 +158,6 @@ class SeqToSeqModel(EvalModel):
         outputs = self.model.generate(
             **inputs,
             max_length=self.max_output_length,
-            do_sample=self.do_sample,
             **kwargs,
         )
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
@@ -211,7 +212,6 @@ class CausalModel(SeqToSeqModel):
             **inputs,
             max_new_tokens=self.max_output_length,
             pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
-            do_sample=self.do_sample,
             **kwargs,
         )
         batch_size, length = inputs.input_ids.shape
