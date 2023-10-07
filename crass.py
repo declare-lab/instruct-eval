@@ -141,6 +141,8 @@ def evaluate(model: EvalModel, data_train: CrassData, data_test: CrassData) -> d
 
     progress = tqdm(data_test.samples)
     sample: CrassSample
+
+    prompts, labels = [], []
     for sample in progress:
         # get prompt and make sure it fits
         k = int(len(data_train.samples))
@@ -154,12 +156,16 @@ def evaluate(model: EvalModel, data_train: CrassData, data_test: CrassData) -> d
             prompt = train_prompt + prompt_end
 
         label = sample.get_answer_label()
-        pred = model.run(prompt).strip()
-        is_correct.append(pred.startswith(label))
-        score = sum(is_correct) / len(is_correct)
-        progress.set_postfix(score=score)
-        print(dict(prompt=prompt, label=label, pred=pred))
+        prompts.append(prompt)
+        labels.append(label)
 
+    preds = model.run(prompts)
+    preds = [i.strip() for i in preds]
+    for label, pred in zip(labels, preds):
+        is_correct.append(pred.startswith(label))
+
+    score = sum(is_correct) / len(is_correct)
+    print(dict(prompt=prompts[0], label=labels[0], pred=preds[0]))
     return dict(score=score)
 
 

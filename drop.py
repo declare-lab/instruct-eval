@@ -103,6 +103,9 @@ def evaluate(model: EvalModel, data: DropData, ntrain: int) -> dict:
 
     progress = tqdm(data_test.samples)
     sample: DropSample
+
+    prompts = []
+    labels = []
     for sample in progress:
         # get prompt and make sure it fits
         k = int(ntrain)
@@ -116,11 +119,16 @@ def evaluate(model: EvalModel, data: DropData, ntrain: int) -> dict:
             prompt = train_prompt + prompt_end
 
         label = sample.get_answers()[0]
-        pred = model.run(prompt).strip()
+        prompts.append(prompt)
+        labels.append(label)
+
+    preds = model.run(prompts)
+    preds = [i.strip() for i in preds]
+    for label, pred in zip(labels, preds):
         is_correct.append(pred.startswith(label))
-        score = sum(is_correct) / len(is_correct)
-        progress.set_postfix(score=score)
-        print(dict(prompt=prompt, label=label, pred=pred))
+
+    score = sum(is_correct) / len(is_correct)
+    print(dict(prompt=prompts[0], label=labels[0], pred=preds[0]))
 
     return dict(score=score)
 

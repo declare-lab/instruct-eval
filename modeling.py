@@ -276,6 +276,9 @@ class CausalModel(SeqToSeqModel):
         self.load()
         all_outputs = []
 
+        do_sample = kwargs.pop("do_sample", self.do_sample)
+        max_output_length = kwargs.pop("max_output_length", self.max_output_length)
+
         for i in range(0, len(prompt), self.batch_size):
             batch_prompt = prompt[i : i + self.batch_size]
             inputs = self.tokenizer(batch_prompt, return_tensors="pt", padding=True).to(
@@ -286,9 +289,9 @@ class CausalModel(SeqToSeqModel):
 
             outputs = self.model.generate(
                 **inputs,
-                max_new_tokens=self.max_output_length,
+                max_new_tokens=max_output_length,
                 pad_token_id=self.tokenizer.eos_token_id,  # Avoid pad token warning
-                do_sample=self.do_sample,
+                do_sample=do_sample,
                 **kwargs,
             )
             batch_size, length = inputs.input_ids.shape

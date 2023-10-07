@@ -67,9 +67,12 @@ def evaluate(model: EvalModel, data: BBHData, ntrain: int) -> dict:
         prompts.append(prompt)
 
     preds = model.run(prompts)
-    is_correct.extend([pred.strip().startswith(label) for pred, label in zip(preds, data_test.target)])
-    if i == 0:
-        print(dict(prompt=prompt, label=label, pred=pred))
+    labels = [s.target for s in data_test.samples]
+
+    print(dict(prompt=prompt, label=labels[0], pred=preds[0]))
+    is_correct.extend(
+        [pred.strip().startswith(label) for pred, label in zip(preds, labels)]
+    )
 
     return dict(score=sum(is_correct) / len(is_correct))
 

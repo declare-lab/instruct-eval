@@ -78,28 +78,38 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     dataset = read_problems(data_path)
     n_sample = kwargs.get("n_sample", 1)
     best_temperature = {1: 0.1, 10: 0.6, 100: 0.8}
+    temperature = best_temperature[n_sample]
+
     samples = []
     progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
+
+    prompts = []
+    task_ids = []
     for task_id in dataset:
         for i in range(n_sample):
             prompt = dataset[task_id]["prompt"]
             prompt = gen_prompt(prompt, model)
-            temperature = best_temperature[n_sample]
-            if temperature > 0:
-                completion = model.run(prompt, temperature=temperature, do_sample=True)
-            else:
-                completion = model.run(prompt)
-
-            completion = fix_indents(completion)
-            sample = dict(task_id=task_id, completion=filter_code(completion, model))
-            if i == 0:
-                print("Prompt: ", "-" * 100)
-                print(prompt)
-                print("Completion: ", "-" * 100)
-                print(filter_code(completion, model))
-            samples.append(sample)
+            prompts.append(prompt)
+            task_ids.append(task_id)
             progress_bar.update(1)
     progress_bar.close()
+
+    if temperature > 0:
+        completions = model.run(prompts, temperature=temperature, do_sample=True)
+    else:
+        completions = model.run(prompts)
+
+    for i, (prompt, completion, task_id) in enumerate(
+        zip(prompts, completions, task_ids)
+    ):
+        completion = fix_indents(completion)
+        sample = dict(task_id=task_id, completion=filter_code(completion, model))
+        if i == 0:
+            print("Prompt: ", "-" * 100)
+            print(prompt)
+            print("Completion: ", "-" * 100)
+            print(filter_code(completion, model))
+        samples.append(sample)
 
     model_name = model.model_path.replace("/", "_")
     pred_filename = f"humaneval_{model_name}_predictions.jsonl"
