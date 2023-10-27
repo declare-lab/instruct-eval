@@ -138,18 +138,15 @@ class vllmModel(EvalModel):
     load_8bit: bool = False
     temperature: float = 0.0
     tensor_parallel_size: int = 1
+    dtype: str = "float16"
 
     def load(self):
         if self.model is None:
-            args = {}
-            if self.load_8bit:
-                args.update(device_map="auto", load_in_8bit=True)
-            else:
-                args.update(device_map="auto", torch_dtype=torch.float16)
             self.model = LLM(
                 model=self.model_path,
                 trust_remote_code=self.trust_remote_code,
                 tensor_parallel_size=self.tensor_parallel_size,
+                dtype=self.dtype,
             )
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(
