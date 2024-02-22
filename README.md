@@ -6,19 +6,21 @@
   <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png" alt="" width="300" height="300">
 </p>
 
-📣 **Red-Eval**, the benchmark for **Safety** Evaluation of LLMs has been added: [Red-Eval](https://github.com/declare-lab/instruct-eval/tree/main/red-eval)
+> 📣 Introducing Resta: **Safety Re-alignment of Language Models**. [**Paper**](https://arxiv.org/abs/2402.11746) [**Github**](https://github.com/declare-lab/resta)
 
-📣 Introducing **Red-Eval** to evaluate the safety of the LLMs using several jailbreaking prompts. With **Red-Eval** one could jailbreak/red-team GPT-4 with a 65.1% attack success rate and ChatGPT could be jailbroken 73% of the time as measured on DangerousQA and HarmfulQA benchmarks. More details are here: [Code](https://github.com/declare-lab/red-instruct) and [Paper](https://arxiv.org/abs/2308.09662).
+> 📣 **Red-Eval**, the benchmark for **Safety** Evaluation of LLMs has been added: [Red-Eval](https://github.com/declare-lab/instruct-eval/tree/main/red-eval)
 
-📣 We developed Flacuna by fine-tuning Vicuna-13B on the Flan collection. Flacuna is better than Vicuna at problem-solving. Access the model here [https://huggingface.co/declare-lab/flacuna-13b-v1.0](https://huggingface.co/declare-lab/flacuna-13b-v1.0).
+> 📣 Introducing **Red-Eval** to evaluate the safety of the LLMs using several jailbreaking prompts. With **Red-Eval** one could jailbreak/red-team GPT-4 with a 65.1% attack success rate and ChatGPT could be jailbroken 73% of the time as measured on DangerousQA and HarmfulQA benchmarks. More details are here: [Code](https://github.com/declare-lab/red-instruct) and [Paper](https://arxiv.org/abs/2308.09662).
 
-📣 The [**InstructEval**](https://declare-lab.net/instruct-eval/) benchmark and leaderboard have been released. 
+> 📣 We developed Flacuna by fine-tuning Vicuna-13B on the Flan collection. Flacuna is better than Vicuna at problem-solving. Access the model here [https://huggingface.co/declare-lab/flacuna-13b-v1.0](https://huggingface.co/declare-lab/flacuna-13b-v1.0).
 
-📣 The paper reporting Instruction Tuned LLMs on the **InstructEval** benchmark suite has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
+> 📣 The [**InstructEval**](https://declare-lab.net/instruct-eval/) benchmark and leaderboard have been released. 
 
-📣 We are releasing **IMPACT**, a dataset for evaluating the writing capability of LLMs in four aspects: Informative, Professional, Argumentative, and Creative. Download it from Huggingface: [https://huggingface.co/datasets/declare-lab/InstructEvalImpact](https://huggingface.co/datasets/declare-lab/InstructEvalImpact). 
+> 📣 The paper reporting Instruction Tuned LLMs on the **InstructEval** benchmark suite has been released on Arxiv. Read it here: [https://arxiv.org/pdf/2306.04757.pdf](https://arxiv.org/pdf/2306.04757.pdf)
 
-📣 **FLAN-T5** is also useful in text-to-audio generation. Find our work
+> 📣 We are releasing **IMPACT**, a dataset for evaluating the writing capability of LLMs in four aspects: Informative, Professional, Argumentative, and Creative. Download it from Huggingface: [https://huggingface.co/datasets/declare-lab/InstructEvalImpact](https://huggingface.co/datasets/declare-lab/InstructEvalImpact). 
+
+> 📣 **FLAN-T5** is also useful in text-to-audio generation. Find our work
 at [https://github.com/declare-lab/tango](https://github.com/declare-lab/tango) if you are interested.
 
 This repository contains code to evaluate instruction-tuned models such as Alpaca and Flan-T5 on held-out
