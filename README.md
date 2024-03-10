@@ -6,7 +6,7 @@
   <img src="https://raw.githubusercontent.com/declare-lab/instruct-eval/main/docs/logo.png" alt="" width="300" height="300">
 </p>
 
-> 🔥 If you are interested in IQ testing LLMs, check out our new work: [PuzzleVQA](https://github.com/declare-lab/puzzle-reasoning)
+> 🔥 If you are interested in IQ testing LLMs, check out our new work: [AlgoPuzzleVQA](https://github.com/declare-lab/puzzle-reasoning)
 
 > 📣 Introducing Resta: **Safety Re-alignment of Language Models**. [**Paper**](https://arxiv.org/abs/2402.11746) [**Github**](https://github.com/declare-lab/resta)
 
