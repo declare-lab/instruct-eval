@@ -132,7 +132,7 @@ def evaluate(
         # A is the correct answer
         A_base, B_base = model.get_choice(chosen_first)
         # B is the correct answer
-        A, B = model.get_choice(chose_last)
+        A, B = model.get_choice(chosen_last)
 
         if (A_base + B) > (B_base + A):
             pred = "A"
